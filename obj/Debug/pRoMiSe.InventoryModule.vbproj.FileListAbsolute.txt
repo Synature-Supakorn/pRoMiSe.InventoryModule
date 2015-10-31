@@ -1,0 +1,8 @@
+D:\pRoMiSeSoftware\pRoMiSe.InventoryModule\pRoMiSe.InventoryModule\bin\Debug\pRoMiSe.InventoryModule.dll
+D:\pRoMiSeSoftware\pRoMiSe.InventoryModule\pRoMiSe.InventoryModule\bin\Debug\pRoMiSe.InventoryModule.pdb
+D:\pRoMiSeSoftware\pRoMiSe.InventoryModule\pRoMiSe.InventoryModule\bin\Debug\pRoMiSe.InventoryModule.xml
+D:\pRoMiSeSoftware\pRoMiSe.InventoryModule\pRoMiSe.InventoryModule\obj\Debug\pRoMiSe.InventoryModule.Resources.resources
+D:\pRoMiSeSoftware\pRoMiSe.InventoryModule\pRoMiSe.InventoryModule\obj\Debug\pRoMiSe.InventoryModule.vbproj.GenerateResource.Cache
+D:\pRoMiSeSoftware\pRoMiSe.InventoryModule\pRoMiSe.InventoryModule\obj\Debug\pRoMiSe.InventoryModule.dll
+D:\pRoMiSeSoftware\pRoMiSe.InventoryModule\pRoMiSe.InventoryModule\obj\Debug\pRoMiSe.InventoryModule.xml
+D:\pRoMiSeSoftware\pRoMiSe.InventoryModule\pRoMiSe.InventoryModule\obj\Debug\pRoMiSe.InventoryModule.pdb

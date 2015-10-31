@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A0646F1F-ACE5-4C21-A9B5-552119BA604E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>pRoMiSe.Inventory</RootNamespace>
+    <AssemblyName>pRoMiSe.Inventory</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>pRoMiSe.Inventory.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>pRoMiSe.Inventory.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json.Net20">
+      <HintPath>..\..\PTT\Api_ClassLib\Newtonsoft.Json.Net20.dll</HintPath>
+    </Reference>
+    <Reference Include="POSLIB">
+      <HintPath>..\..\PTT\Api_ClassLib\POSLIB.dll</HintPath>
+    </Reference>
+    <Reference Include="PttOil_lib">
+      <HintPath>..\..\PTT\Api_ClassLib\PttOil_lib.dll</HintPath>
+    </Reference>
+    <Reference Include="PttPosibleApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\PTT\Api_ClassLib\PttPosibleApi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\AdjustOrderController.vb" />
+    <Compile Include="Controllers\DailyStockController.vb" />
+    <Compile Include="Controllers\MonthlyStockController.vb" />
+    <Compile Include="Controllers\ProductController.vb" />
+    <Compile Include="Controllers\ReceiveOrderFromPTTController.vb" />
+    <Compile Include="Controllers\ReceiveFromPurchaseOrderController.vb" />
+    <Compile Include="Controllers\DirectReceiveOrderController.vb" />
+    <Compile Include="Controllers\DocumentController.vb" />
+    <Compile Include="Controllers\InventoryController.vb" />
+    <Compile Include="Controllers\MaterialController.vb" />
+    <Compile Include="Controllers\PurchaseOrderController.vb" />
+    <Compile Include="Controllers\ReceiveFromTransferOrderController.vb" />
+    <Compile Include="Controllers\ReportController.vb" />
+    <Compile Include="Controllers\SaleOrderController.vb" />
+    <Compile Include="Controllers\StockCardController.vb" />
+    <Compile Include="Controllers\TransferOrderController.vb" />
+    <Compile Include="Controllers\VendorController.vb" />
+    <Compile Include="Controllers\WeeklyStockController.vb" />
+    <Compile Include="GlobalVariable.vb" />
+    <Compile Include="Models\BusinessPlaceData.vb" />
+    <Compile Include="Models\CustomerData.vb" />
+    <Compile Include="Models\DocumentModel.vb" />
+    <Compile Include="Models\InventoryModel.vb" />
+    <Compile Include="Models\MaterialDeptModel.vb" />
+    <Compile Include="Models\MaterialGroupModel.vb" />
+    <Compile Include="Models\MaterialModel.vb" />
+    <Compile Include="Models\PlantData.vb" />
+    <Compile Include="Models\ResponseModel.vb" />
+    <Compile Include="Models\ShiftData.vb" />
+    <Compile Include="Models\ShippingConditionData.vb" />
+    <Compile Include="Models\StockCardModel.vb" />
+    <Compile Include="Modules\ProductModule.vb" />
+    <Compile Include="Modules\ReportModule.vb" />
+    <Compile Include="Modules\StockCardModule.vb" />
+    <Compile Include="Models\VendorGroupModel.vb" />
+    <Compile Include="Models\VendorModel.vb" />
+    <Compile Include="Modules\AdjustOrderModule.vb" />
+    <Compile Include="Modules\CountStockModule.vb" />
+    <Compile Include="Modules\ReceiveOrderFromPTTModule.vb" />
+    <Compile Include="Modules\ReceiveFromPurchaseOrderModule.vb" />
+    <Compile Include="Modules\DirectReceiveOrderModule.vb" />
+    <Compile Include="Modules\DocumentModule.vb" />
+    <Compile Include="Modules\InventoryModule.vb" />
+    <Compile Include="Modules\MaterialDeptModule.vb" />
+    <Compile Include="Modules\MaterialGroupModule.vb" />
+    <Compile Include="Modules\MaterialModule.vb" />
+    <Compile Include="Modules\PurchaseOrderModule.vb" />
+    <Compile Include="Modules\ReceiveFromTrnasferOrderModule.vb" />
+    <Compile Include="Models\StatusModel.vb" />
+    <Compile Include="Modules\TransferOrderModule.vb" />
+    <Compile Include="Modules\VendorGroupModule.vb" />
+    <Compile Include="Modules\VendorModule.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SQLClass\DocumentPTTSQL.vb" />
+    <Compile Include="SQLClass\DocumentSQL.vb" />
+    <Compile Include="SQLClass\InventorySQL.vb" />
+    <Compile Include="SQLClass\MaterialSQL.vb" />
+    <Compile Include="SQLClass\VendorSQL.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\pRoMiSe.DBHelper\pRoMiSe.DBHelper.vbproj">
+      <Project>{46914b9d-2e66-479b-8c03-455991488e5b}</Project>
+      <Name>pRoMiSe.DBHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\pRoMiSe.Utilitys\pRoMiSe.Utilitys.vbproj">
+      <Project>{b8d28f97-654a-464b-8a04-5f4cd5fd9cf8}</Project>
+      <Name>pRoMiSe.Utilitys</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
