@@ -64,15 +64,15 @@ Module DocumentPTTSQL
                                                ByVal taxType As Integer, ByVal materialUnitSmallID As Integer, ByVal selectUnitID As Integer, ByVal selectUnitName As String,
                                                ByVal unitSmallAmount As Decimal, ByVal materialNetPrice As Decimal, ByVal materialCode As String,
                                                ByVal materialName As String, ByVal supplierMaterialCode As String, ByVal supplierMaterialName As String,
-                                               ByVal remark As String, ByVal Api60F As String) As String
+                                               ByVal remark As String, ByVal Api60F As String, ByVal unitSmallName As String) As String
         Dim strSQL As String = ""
         strSQL = "Insert INTO DocDetail(DocDetailID, DocumentID, ShopID, ProductID, ProductUnit, ProductAmount, " &
                  "ProductDiscount, ProductDiscountAmount, ProductPricePerUnit,ProductTax, ProductTaxType, UnitID, " &
-                 "UnitName, UnitSmallAmount, ProductNetPrice,ProductCode,ProductName,SupplierMaterialCode,SupplierMaterialName,ExtraText1,ExtraText2) " &
+                 "UnitName, UnitSmallAmount, ProductNetPrice,ProductCode,ProductName,SupplierMaterialCode,SupplierMaterialName,ExtraText1,ExtraText2,ExtraText3) " &
                  "Values(" & docDetailID & ", " & documentID & ", " & documentShopID & ", " & materialID & ", " & materialUnitSmallID & ", " & materialAmount &
                  "," & percentDiscount & ", " & amountDiscount & "," & pricePerUnit & ", " & materialTax & ", " & taxType & ", " & selectUnitID &
                  ",'" & selectUnitName & "', " & unitSmallAmount & "," & materialNetPrice & ",'" & materialCode & "','" & materialName &
-                 "','" & supplierMaterialCode & "','" & supplierMaterialName & "','" & ReplaceSuitableStringForSQL(remark) & "','" & ReplaceSuitableStringForSQL(Api60F) & "')"
+                 "','" & supplierMaterialCode & "','" & supplierMaterialName & "','" & ReplaceSuitableStringForSQL(remark) & "','" & ReplaceSuitableStringForSQL(Api60F) & "','" & ReplaceSuitableStringForSQL(unitSmallName) & "')"
         Return dbUtil.sqlExecute(strSQL, connection, objTrans)
     End Function
 
@@ -91,45 +91,46 @@ Module DocumentPTTSQL
         Dim strSQL As String
         strSQL = "UPDATE  Document SET " &
                 "DocumentDate  =" & documentDate &
-                ", CustomerDocNo='" & customerDocNo & "'" &
-                ", CustomerCode  ='" & customerCode & "'" &
-                ", CustomerName ='" & customerName & "'" &
-                ", CustomerAddress  ='" & customerAddress & "'" &
-                ", ShipToOrDestinationPort  ='" & customerShipTo & "'" &
-                ", BillTo  ='" & customerBillTo & "'" &
-                ", TaxInvoiceNo  ='" & taxInvoiceNo & "'" &
+                ", CustomerDocNo='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(customerDocNo) & "'" &
+                ", CustomerCode  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(customerCode) & "'" &
+                ", CustomerName ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(customerName) & "'" &
+                ", CustomerAddress  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(customerAddress) & "'" &
+                ", ShipToOrDestinationPort  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(customerShipTo) & "'" &
+                ", BillTo  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(customerBillTo) & "'" &
+                ", TaxInvoiceNo  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(taxInvoiceNo) & "'" &
                 ", TaxInvoiceDate  =" & taxInvoiceDate &
-                ", InvoiceNo  ='" & invoiceNo & "'" &
+                ", InvoiceNo  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(invoiceNo) & "'" &
                 ", InvoiceDate  =" & invoiceDate &
-                ", SaleOrderNo  ='" & saleOrderNo & "'" &
+                ", SaleOrderNo  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(saleOrderNo) & "'" &
                 ", SaleOrderDate  =" & saleOrderDate &
-                ", InvoicePONO ='" & purchaseOrderNo & "'" &
+                ", InvoicePONO ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(purchaseOrderNo) & "'" &
                 ", InvoicePODate  =" & purchaseOrderDate &
-                ", DeliveryNo  ='" & deliveryNo & "'" &
+                ", DeliveryNo  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(deliveryNo) & "'" &
                 ", DeliveryDate  =" & deliveryDate &
                 ", BusinessPlace  =" & businessId &
-                ", Plant  ='" & plantId & "'" &
+                ", Plant  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(plantId) & "'" &
                 ", PaymentDate  = " & paymentDate &
-                ", Incoterm  ='" & incoterm & "'" &
-                ", ContractNo  ='" & contractNo & "'" &
+                ", Incoterm  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(incoterm) & "'" &
+                ", ContractNo  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(contractNo) & "'" &
                 ", ShipmentDate  =" & shipmentDate &
-                ", ShippingCondition  ='" & shippingCondition & "'" &
-                ", CarrierBy  ='" & carrierBy & "'" &
-                ", CarrierNo  ='" & carrierName & "'" &
-                ", DriverName  ='" & driverName & "'" &
-                ", SealNo  ='" & sealNo & "'" &
-                ", TripNo  ='" & tripNo & "'" &
+                ", ShippingCondition  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(shippingCondition) & "'" &
+                ", CarrierBy  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(carrierBy) & "'" &
+                ", CarrierNo  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(carrierName) & "'" &
+                ", DriverName  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(driverName) & "'" &
+                ", SealNo  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(sealNo) & "'" &
+                ", TripNo  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(tripNo) & "'" &
                 ", TransferTaxClass  =" & transferTaxClass &
                 ", TransferTotal  =" & transferTotal &
                 ", TransferVAT  =" & transferVAT &
                 ", TransferNetPrice  =" & transferNetPrice &
-                ", ShipmentNo  ='" & ShipmentNo & "'" &
+                ", ShipmentNo  ='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(ShipmentNo) & "'" &
                 ", ShiftID  =" & ShiftID &
                  ", ShiftDay  =" & ShiftDay &
                 ", ShiftNo  =" & ShiftNo &
-                ", GSNO='" & GSNO & "'" &
+                ", GSNO='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(GSNO) & "'" &
                 ",UpdateBy=" & updateBy &
                 ",CreateBy='" & createBy & "'" &
+                ",Remark='" & Utilitys.Utilitys.ReplaceSuitableStringForSQL(contractor) & "'" &
                  " Where DocumentID = " & documentID & " AND ShopID = " & documentShopID
         Return dbUtil.sqlExecute(strSQL, connection, objTrans)
     End Function
@@ -140,7 +141,7 @@ Module DocumentPTTSQL
                                                  ByVal taxType As Integer, ByVal materialUnitSmallID As Integer, ByVal selectUnitID As Integer, ByVal selectUnitName As String,
                                                  ByVal unitSmallAmount As Decimal, ByVal materialNetPrice As Decimal, ByVal materialCode As String,
                                                  ByVal materialName As String, ByVal supplierMaterialCode As String, ByVal supplierMaterialName As String,
-                                                 ByVal remark As String, ByVal Api60F As String, ByVal matTemp As Decimal, ByVal testTemp As Decimal, ByVal testApi As Decimal) As Integer
+                                                 ByVal remark As String, ByVal Api60F As String, ByVal matTemp As Decimal, ByVal testTemp As Decimal, ByVal testApi As Decimal, ByVal unitSmallName As String) As Integer
         Dim strSQL As String
         strSQL = "Update DocDetail " &
                  "Set ProductID = " & materialID & ", ProductUnit = " & materialUnitSmallID &
@@ -151,7 +152,7 @@ Module DocumentPTTSQL
                  "',UnitSmallAmount = " & unitSmallAmount & ", ProductNetPrice = " & materialNetPrice &
                  ", ProductCode='" & materialCode & "',ProductName='" & materialName & "',SupplierMaterialCode='" & supplierMaterialCode & _
                  "',SupplierMaterialName='" & supplierMaterialName & "',ExtraText1='" & Trim(ReplaceSuitableStringForSQL(remark)) & "',ExtraText2='" & Trim(ReplaceSuitableStringForSQL(Api60F)) & "'" & _
-                 ",ExtraValue1=" & matTemp & ",ExtraValue2=" & testTemp & ",ExtraValue3=" & testApi & _
+                 ",ExtraValue1=" & matTemp & ",ExtraValue2=" & testTemp & ",ExtraValue3=" & testApi & ",ExtraText3='" & Trim(ReplaceSuitableStringForSQL(unitSmallName)) & "'" & _
                  " Where DocDetailID = " & docDetailID & " AND DocumentID = " & documentID & " AND ShopID = " & documentShopID
         Return dbUtil.sqlExecute(strSQL, connection, objTrans)
     End Function

@@ -2,7 +2,7 @@
 
 Module ProductModule
 
-    Friend Function ProductUpdateData(ByRef ResponseText As String, ByVal ShopID As Integer, ByVal InventoryID As Integer, ByVal ProductGroupID As Integer, ByVal ProductDeptID As Integer, ByVal ProductID As Integer, ByVal MaterialCode As String, ByVal ProductCode As String, ByVal MaterialName As String, ByVal ProductName As String, ByVal MaterialTypeID As Integer, ByVal ProductTypeID As Integer, ByVal MaterialTaxType As Integer, ByVal ProductTaxType As Integer, ByVal ProductDisplay As Integer, ByVal ProductActivate As Integer, ByVal ProductOrdering As Integer, ByVal ProductMin As Double, ByVal ProductPrice0 As Double, ByVal ProductPrice1 As Double, ByVal ProductPrice2 As Double, ByVal ProductPrice3 As Double, ByVal ProductPrice4 As Double, ByVal ProductPrice5 As Double, ByVal ProductPrice6 As Double, ByVal ProductPrice7 As Double, ByVal ProductPrice8 As Double, ByVal ProductPrice9 As Double, ByVal ProductPrice10 As Double, ByVal ProductPrice11 As Double, ByVal ProductPrice12 As Double, ByVal ProductPrice13 As Double, ByVal UnitSmallName As String, ByVal UnitLargeName1 As String, ByVal UnitLargeName2 As String, ByVal UnitLargeName3 As String, ByVal UnitLargeName4 As String, ByVal UnitLargeName5 As String, ByVal UnitRatio1 As Double, ByVal UnitRatio2 As Double, ByVal UnitRatio3 As Double, ByVal UnitRatio4 As Double, ByVal UnitRatio5 As Double, ByVal UnitSmallBarcode As String, ByVal UnitLBarcode1 As String, ByVal UnitLBarcode2 As String, ByVal UnitLBarcode3 As String, ByVal UnitLBarcode4 As String, ByVal UnitLBarcode5 As String, ByVal PurchaseUnit As String, ByVal PurchaseUnit_D As String, ByVal ReceiveUnit As String, ByVal ReceiveUnit_D As String, ByVal SaleUnit As String, ByVal SaleUnit_D As String, ByVal TransferUnit As String, ByVal TransferUnit_D As String, ByVal AdjustUnit As String, ByVal AdjustUnit_D As String, ByVal StockUnit As String, ByVal StockUnit_D As String, ByVal MinimumStock As Decimal, ByVal MaximumStock As Decimal, ByVal IsShowInPOS As Integer, ByVal IsRecommend As Integer, ByVal globalVariable As GlobalVariable) As Boolean
+    Friend Function ProductUpdateData(ByRef ResponseText As String, ByVal ShopID As Integer, ByVal InventoryID As Integer, ByVal ProductGroupID As Integer, ByVal ProductDeptID As Integer, ByVal ProductID As Integer, ByVal MaterialCode As String, ByVal ProductCode As String, ByVal MaterialName As String, ByVal ProductName As String, ByVal MaterialTypeID As Integer, ByVal ProductTypeID As Integer, ByVal MaterialTaxType As Integer, ByVal ProductTaxType As Integer, ByVal ProductDisplay As Integer, ByVal ProductActivate As Integer, ByVal ProductOrdering As Integer, ByVal ProductMin As Double, ByVal ProductPrice0 As Double, ByVal ProductPrice1 As Double, ByVal ProductPrice2 As Double, ByVal ProductPrice3 As Double, ByVal ProductPrice4 As Double, ByVal ProductPrice5 As Double, ByVal ProductPrice6 As Double, ByVal ProductPrice7 As Double, ByVal ProductPrice8 As Double, ByVal ProductPrice9 As Double, ByVal ProductPrice10 As Double, ByVal ProductPrice11 As Double, ByVal ProductPrice12 As Double, ByVal ProductPrice13 As Double, ByVal UnitSmallName As String, ByVal UnitLargeName1 As String, ByVal UnitLargeName2 As String, ByVal UnitLargeName3 As String, ByVal UnitLargeName4 As String, ByVal UnitLargeName5 As String, ByVal UnitRatio1 As Double, ByVal UnitRatio2 As Double, ByVal UnitRatio3 As Double, ByVal UnitRatio4 As Double, ByVal UnitRatio5 As Double, ByVal UnitSmallBarcode As String, ByVal UnitLBarcode1 As String, ByVal UnitLBarcode2 As String, ByVal UnitLBarcode3 As String, ByVal UnitLBarcode4 As String, ByVal UnitLBarcode5 As String, ByVal PurchaseUnit As String, ByVal PurchaseUnit_D As String, ByVal ReceiveUnit As String, ByVal ReceiveUnit_D As String, ByVal SaleUnit As String, ByVal SaleUnit_D As String, ByVal TransferUnit As String, ByVal TransferUnit_D As String, ByVal AdjustUnit As String, ByVal AdjustUnit_D As String, ByVal StockUnit As String, ByVal StockUnit_D As String, ByVal MinimumStock As Decimal, ByVal MaximumStock As Decimal, ByVal IsShowInPOS As Integer, ByVal IsRecommend As Integer, ByVal pttCode1 As String, ByVal pttName1 As String, ByVal pttCode2 As String, ByVal pttName2 As String, ByVal pttCode3 As String, ByVal pttName3 As String, ByVal pttCode4 As String, ByVal pttName4 As String, ByVal pttCode5 As String, ByVal pttName5 As String, ByVal globalVariable As GlobalVariable) As Boolean
         'Validate Data Section
         Dim FoundError As Boolean = False
         Dim EMsg As String = ""
@@ -84,7 +84,7 @@ Module ProductModule
                         End If
                         If Trim(UnitLargeName1) <> "" And UnitRatio1 > 0 Then
                             unitlargesql1 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName1, "'", "''") + "')"
-                            unitratiosql1 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted) values (" + KeyUnitRatioID.ToString + "," + KeyUnitSmallID.ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio1.ToString + ",'" + Replace(UnitLBarcode1, "'", "''") + "',0)"
+                            unitratiosql1 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted,PTTCode,PTTName) values (" + KeyUnitRatioID.ToString + "," + KeyUnitSmallID.ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio1.ToString + ",'" + Replace(UnitLBarcode1, "'", "''") + "',0,'" + Replace(pttCode1, "'", "''") + "','" + Replace(pttName1, "'", "''") + "')"
                             SelUnitL(1) = KeyUnitLargeID
                             KeyUnitRatioID += 1
                             KeyUnitLargeID += 1
@@ -93,7 +93,7 @@ Module ProductModule
                         End If
                         If Trim(UnitLargeName2) <> "" And UnitRatio2 > 0 Then
                             unitlargesql2 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName2, "'", "''") + "')"
-                            unitratiosql2 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted) values (" + KeyUnitRatioID.ToString + "," + KeyUnitSmallID.ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio2.ToString + ",'" + Replace(UnitLBarcode2, "'", "''") + "',0)"
+                            unitratiosql2 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted,PTTCode,PTTName) values (" + KeyUnitRatioID.ToString + "," + KeyUnitSmallID.ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio2.ToString + ",'" + Replace(UnitLBarcode2, "'", "''") + "',0,'" + Replace(pttCode2, "'", "''") + "','" + Replace(pttName2, "'", "''") + "')"
                             SelUnitL(2) = KeyUnitLargeID
                             KeyUnitRatioID += 1
                             KeyUnitLargeID += 1
@@ -102,7 +102,7 @@ Module ProductModule
                         End If
                         If Trim(UnitLargeName3) <> "" And UnitRatio3 > 0 Then
                             unitlargesql3 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName3, "'", "''") + "')"
-                            unitratiosql3 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted) values (" + KeyUnitRatioID.ToString + "," + KeyUnitSmallID.ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio3.ToString + ",'" + Replace(UnitLBarcode3, "'", "''") + "',0)"
+                            unitratiosql3 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted,PTTCode,PTTName) values (" + KeyUnitRatioID.ToString + "," + KeyUnitSmallID.ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio3.ToString + ",'" + Replace(UnitLBarcode3, "'", "''") + "',0,'" + Replace(pttCode3, "'", "''") + "','" + Replace(pttName3, "'", "''") + "')"
                             SelUnitL(3) = KeyUnitLargeID
                             KeyUnitRatioID += 1
                             KeyUnitLargeID += 1
@@ -111,7 +111,7 @@ Module ProductModule
                         End If
                         If Trim(UnitLargeName4) <> "" And UnitRatio4 > 0 Then
                             unitlargesql4 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName4, "'", "''") + "')"
-                            unitratiosql4 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted) values (" + KeyUnitRatioID.ToString + "," + KeyUnitSmallID.ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio4.ToString + ",'" + Replace(UnitLBarcode4, "'", "''") + "',0)"
+                            unitratiosql4 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted,PTTCode,PTTName) values (" + KeyUnitRatioID.ToString + "," + KeyUnitSmallID.ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio4.ToString + ",'" + Replace(UnitLBarcode4, "'", "''") + "',0,'" + Replace(pttCode4, "'", "''") + "','" + Replace(pttName4, "'", "''") + "')"
                             SelUnitL(4) = KeyUnitLargeID
                             KeyUnitRatioID += 1
                             KeyUnitLargeID += 1
@@ -120,7 +120,7 @@ Module ProductModule
                         End If
                         If Trim(UnitLargeName5) <> "" And UnitRatio1 > 0 Then
                             unitlargesql5 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName5, "'", "''") + "')"
-                            unitratiosql5 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted) values (" + KeyUnitRatioID.ToString + "," + KeyUnitSmallID.ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio5.ToString + ",'" + Replace(UnitLBarcode5, "'", "''") + "',0)"
+                            unitratiosql5 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted,PTTCode,PTTName) values (" + KeyUnitRatioID.ToString + "," + KeyUnitSmallID.ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio5.ToString + ",'" + Replace(UnitLBarcode5, "'", "''") + "',0,'" + Replace(pttCode5, "'", "''") + "','" + Replace(pttName5, "'", "''") + "')"
                             SelUnitL(5) = KeyUnitLargeID
                             KeyUnitRatioID += 1
                             KeyUnitLargeID += 1
@@ -481,11 +481,11 @@ Module ProductModule
                                 If Trim(UnitLargeName1) <> "" And UnitRatio1 > 0 Then
                                     If unitData.Rows.Count >= 2 Then
                                         unitlargesql1 = "update unitlarge set UnitLargeName='" + Replace(UnitLargeName1, "'", "''") + "' where UnitLargeID=" + unitData.Rows(1)("UnitLargeID").ToString
-                                        unitratiosql1 = "update UnitRatio set MaterialUnitRatioCode='" + Replace(UnitLBarcode1, "'", "''") + "',UnitSmallRatio=" + UnitRatio1.ToString + " where UnitID=" + unitData.Rows(1)("UnitID").ToString
+                                        unitratiosql1 = "update UnitRatio set MaterialUnitRatioCode='" + Replace(UnitLBarcode1, "'", "''") + "',UnitSmallRatio=" + UnitRatio1.ToString + ",PTTCode='" + Replace(pttCode1, "'", "''") + "',PTTName='" + Replace(pttName1, "'", "''") + "' where UnitID=" + unitData.Rows(1)("UnitID").ToString
                                         SelUnitL(1) = unitData.Rows(1)("UnitLargeID").ToString
                                     Else
                                         unitlargesql1 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName1, "'", "''") + "')"
-                                        unitratiosql1 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted) values (" + KeyUnitRatioID.ToString + "," + getMat.Rows(0)("UnitSmallID").ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio1.ToString + ",'" + Replace(UnitLBarcode1, "'", "''") + "',0)"
+                                        unitratiosql1 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted,PTTCode,PTTName) values (" + KeyUnitRatioID.ToString + "," + getMat.Rows(0)("UnitSmallID").ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio1.ToString + ",'" + Replace(UnitLBarcode1, "'", "''") + "',0,'" + Replace(pttCode1, "'", "''") + "','" + Replace(pttName1, "'", "''") + "')"
                                         SelUnitL(1) = KeyUnitLargeID.ToString
                                         KeyUnitRatioID += 1
                                         KeyUnitLargeID += 1
@@ -497,11 +497,11 @@ Module ProductModule
                                 If Trim(UnitLargeName2) <> "" And UnitRatio2 > 0 Then
                                     If unitData.Rows.Count >= 3 Then
                                         unitlargesql2 = "update unitlarge set UnitLargeName='" + Replace(UnitLargeName2, "'", "''") + "' where UnitLargeID=" + unitData.Rows(2)("UnitLargeID").ToString
-                                        unitratiosql2 = "update UnitRatio set MaterialUnitRatioCode='" + Replace(UnitLBarcode2, "'", "''") + "',UnitSmallRatio=" + UnitRatio2.ToString + " where UnitID=" + unitData.Rows(2)("UnitID").ToString
+                                        unitratiosql2 = "update UnitRatio set MaterialUnitRatioCode='" + Replace(UnitLBarcode2, "'", "''") + "',UnitSmallRatio=" + UnitRatio2.ToString + ",PTTCode='" + Replace(pttCode2, "'", "''") + "',PTTName='" + Replace(pttName2, "'", "''") + "'  where UnitID=" + unitData.Rows(2)("UnitID").ToString
                                         SelUnitL(2) = unitData.Rows(2)("UnitLargeID").ToString
                                     Else
                                         unitlargesql2 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName2, "'", "''") + "')"
-                                        unitratiosql2 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted) values (" + KeyUnitRatioID.ToString + "," + getMat.Rows(0)("UnitSmallID").ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio2.ToString + ",'" + Replace(UnitLBarcode2, "'", "''") + "',0)"
+                                        unitratiosql2 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted,PTTCode,PTTName) values (" + KeyUnitRatioID.ToString + "," + getMat.Rows(0)("UnitSmallID").ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio2.ToString + ",'" + Replace(UnitLBarcode2, "'", "''") + "',0,'" + Replace(pttCode2, "'", "''") + "','" + Replace(pttName2, "'", "''") + "')"
                                         SelUnitL(2) = KeyUnitLargeID.ToString
                                         KeyUnitRatioID += 1
                                         KeyUnitLargeID += 1
@@ -513,11 +513,11 @@ Module ProductModule
                                 If Trim(UnitLargeName3) <> "" And UnitRatio3 > 0 Then
                                     If unitData.Rows.Count >= 4 Then
                                         unitlargesql3 = "update unitlarge set UnitLargeName='" + Replace(UnitLargeName3, "'", "''") + "' where UnitLargeID=" + unitData.Rows(3)("UnitLargeID").ToString
-                                        unitratiosql3 = "update UnitRatio set MaterialUnitRatioCode='" + Replace(UnitLBarcode1, "'", "''") + "',UnitSmallRatio=" + UnitRatio3.ToString + " where UnitID=" + unitData.Rows(3)("UnitID").ToString
+                                        unitratiosql3 = "update UnitRatio set MaterialUnitRatioCode='" + Replace(UnitLBarcode1, "'", "''") + "',UnitSmallRatio=" + UnitRatio3.ToString + ",PTTCode='" + Replace(pttCode3, "'", "''") + "',PTTName='" + Replace(pttName3, "'", "''") + "'  where UnitID=" + unitData.Rows(3)("UnitID").ToString
                                         SelUnitL(3) = unitData.Rows(3)("UnitLargeID").ToString
                                     Else
                                         unitlargesql3 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName3, "'", "''") + "')"
-                                        unitratiosql3 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted) values (" + KeyUnitRatioID.ToString + "," + getMat.Rows(0)("UnitSmallID").ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio3.ToString + ",'" + Replace(UnitLBarcode3, "'", "''") + "',0)"
+                                        unitratiosql3 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted,PTTCode,PTTName) values (" + KeyUnitRatioID.ToString + "," + getMat.Rows(0)("UnitSmallID").ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio3.ToString + ",'" + Replace(UnitLBarcode3, "'", "''") + "',0,'" + Replace(pttCode3, "'", "''") + "','" + Replace(pttName3, "'", "''") + "')"
                                         SelUnitL(3) = KeyUnitLargeID.ToString
                                         KeyUnitRatioID += 1
                                         KeyUnitLargeID += 1
@@ -529,11 +529,11 @@ Module ProductModule
                                 If Trim(UnitLargeName4) <> "" And UnitRatio4 > 0 Then
                                     If unitData.Rows.Count >= 5 Then
                                         unitlargesql4 = "update unitlarge set UnitLargeName='" + Replace(UnitLargeName4, "'", "''") + "' where UnitLargeID=" + unitData.Rows(4)("UnitLargeID").ToString
-                                        unitratiosql4 = "update UnitRatio set MaterialUnitRatioCode='" + Replace(UnitLBarcode4, "'", "''") + "',UnitSmallRatio=" + UnitRatio4.ToString + " where UnitID=" + unitData.Rows(4)("UnitID").ToString
+                                        unitratiosql4 = "update UnitRatio set MaterialUnitRatioCode='" + Replace(UnitLBarcode4, "'", "''") + "',UnitSmallRatio=" + UnitRatio4.ToString + ",PTTCode='" + Replace(pttCode4, "'", "''") + "',PTTName='" + Replace(pttName4, "'", "''") + "'  where UnitID=" + unitData.Rows(4)("UnitID").ToString
                                         SelUnitL(4) = unitData.Rows(4)("UnitLargeID").ToString
                                     Else
                                         unitlargesql4 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName4, "'", "''") + "')"
-                                        unitratiosql4 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted) values (" + KeyUnitRatioID.ToString + "," + getMat.Rows(0)("UnitSmallID").ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio4.ToString + ",'" + Replace(UnitLBarcode4, "'", "''") + "',0)"
+                                        unitratiosql4 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted,PTTCode,PTTName) values (" + KeyUnitRatioID.ToString + "," + getMat.Rows(0)("UnitSmallID").ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio4.ToString + ",'" + Replace(UnitLBarcode4, "'", "''") + "',0,'" + Replace(pttCode4, "'", "''") + "','" + Replace(pttName4, "'", "''") + "')"
                                         SelUnitL(4) = KeyUnitLargeID.ToString
                                         KeyUnitRatioID += 1
                                         KeyUnitLargeID += 1
@@ -545,11 +545,11 @@ Module ProductModule
                                 If Trim(UnitLargeName5) <> "" And UnitRatio5 > 0 Then
                                     If unitData.Rows.Count >= 6 Then
                                         unitlargesql5 = "update unitlarge set UnitLargeName='" + Replace(UnitLargeName5, "'", "''") + "' where UnitLargeID=" + unitData.Rows(5)("UnitLargeID").ToString
-                                        unitratiosql5 = "update UnitRatio set MaterialUnitRatioCode='" + Replace(UnitLBarcode5, "'", "''") + "',UnitSmallRatio=" + UnitRatio5.ToString + " where UnitID=" + unitData.Rows(5)("UnitID").ToString
+                                        unitratiosql5 = "update UnitRatio set MaterialUnitRatioCode='" + Replace(UnitLBarcode5, "'", "''") + "',UnitSmallRatio=" + UnitRatio5.ToString + ",PTTCode='" + Replace(pttCode5, "'", "''") + "',PTTName='" + Replace(pttName5, "'", "''") + "'  where UnitID=" + unitData.Rows(5)("UnitID").ToString
                                         SelUnitL(5) = unitData.Rows(5)("UnitLargeID").ToString
                                     Else
                                         unitlargesql5 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName5, "'", "''") + "')"
-                                        unitratiosql5 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted) values (" + KeyUnitRatioID.ToString + "," + getMat.Rows(0)("UnitSmallID").ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio5.ToString + ",'" + Replace(UnitLBarcode5, "'", "''") + "',0)"
+                                        unitratiosql5 = "insert into unitratio (UnitID,UnitSmallID,UnitLargeID,UnitLargeRatio,UnitSmallRatio,MaterialUnitRatioCode,Deleted,PTTCode,PTTName) values (" + KeyUnitRatioID.ToString + "," + getMat.Rows(0)("UnitSmallID").ToString + "," + KeyUnitLargeID.ToString + "," + "1" + "," + UnitRatio5.ToString + ",'" + Replace(UnitLBarcode5, "'", "''") + "',0,'" + Replace(pttCode5, "'", "''") + "','" + Replace(pttName5, "'", "''") + "')"
                                         SelUnitL(5) = KeyUnitLargeID.ToString
                                         KeyUnitRatioID += 1
                                         KeyUnitLargeID += 1

@@ -29,6 +29,11 @@ Module ReceiveOrderFromPTTModule
         End If
 
         dtMaterialUnit = MaterialSQL.GetMaterialDetailAndUnitRatio(globalVariable.DocDBUtil, globalVariable.DocConn, materialID, materialUnitLargeID, False)
+
+        Dim dtUnitSmall As New DataTable
+        Dim selUnitSmallName As String = ""
+        dtUnitSmall = MaterialSQL.ListMaterialUnit(globalVariable.DocDBUtil, globalVariable.DocConn, materialID)
+
         If dtMaterialUnit.Rows.Count = 0 Then
             resultText = "ไม่พบวัตถุดิบที่เลือก"
             Return False
@@ -36,13 +41,23 @@ Module ReceiveOrderFromPTTModule
         selUnitID = dtMaterialUnit.Rows(0)("SelectUnitID")
         selUnitName = dtMaterialUnit.Rows(0)("UnitLargeName")
         selUnitSmallID = dtMaterialUnit.Rows(0)("UnitSmallID")
+        selUnitSmallName = dtUnitSmall.Rows(0)("UnitSmallName")
 
-        If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialCode")) Then
-            selMaterialCode = dtMaterialUnit.Rows(0)("MaterialCode")
+        If Not IsDBNull(dtMaterialUnit.Rows(0)("PTTCode")) Then
+            selMaterialCode = dtMaterialUnit.Rows(0)("PTTCode")
+        Else
+            If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialCode")) Then
+                selMaterialCode = dtMaterialUnit.Rows(0)("MaterialCode")
+            End If
         End If
-        If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialName")) Then
-            selMaterialName = dtMaterialUnit.Rows(0)("MaterialName")
+        If Not IsDBNull(dtMaterialUnit.Rows(0)("PTTName")) Then
+            selMaterialName = dtMaterialUnit.Rows(0)("PTTName")
+        Else
+            If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialName")) Then
+                selMaterialName = dtMaterialUnit.Rows(0)("MaterialName")
+            End If
         End If
+
         If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialCode1")) Then
             selMaterialSupplierCode = dtMaterialUnit.Rows(0)("MaterialCode1")
         End If
@@ -58,7 +73,7 @@ Module ReceiveOrderFromPTTModule
                                                       selTotalPriceBeforeDiscount, selDiscountPrice, selTax, selMaterialNetPrice)
             DocumentPTTSQL.InsertDocumentDetail(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopID, selDocDetailID, materialID, addAmount,
                                              FormatDecimal(discountPercent, digitDecimal), FormatDecimal(discountAmount, digitDecimal), pricePerUnit, FormatDecimal(selTax, digitDecimal), materialVATType, selUnitSmallID, selUnitID, selUnitName,
-                                             selUnitSmallAmount, FormatDecimal(selMaterialNetPrice, digitDecimal), selMaterialCode, selMaterialName, selMaterialSupplierCode, selMaterialSupplierName, remark, Api60F)
+                                             selUnitSmallAmount, FormatDecimal(selMaterialNetPrice, digitDecimal), selMaterialCode, selMaterialName, selMaterialSupplierCode, selMaterialSupplierName, remark, Api60F, selUnitSmallName)
             DocumentSQL.UpdateDocSummaryIntoDocument(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopID)
 
             dbTrans.Commit()
@@ -245,8 +260,6 @@ Module ReceiveOrderFromPTTModule
         Dim param As String = ""
         Try
 
-            ' DocumentSQL.InsertLog(globalVariable.DocDBUtil, globalVariable.DocConn, "PttPosibleApi.Api", "CheckDate", "66", "Date" & Format(documentDate, "yyyy-MM-dd"))
-
             If DocumentModule.LoadDocument(globalVariable, documentId, documentShopId, data, resultText) = True Then
                 Dim pttData As New PttPosibleApi.Model.TSGR
                 Dim strArr() As String
@@ -356,14 +369,24 @@ Module ReceiveOrderFromPTTModule
                             dd.ORDERNO = data.InvoiceNo
                             dd.DOCNO = data.ShipmentNo
                             dd.ITEMNO = data.DocDetailList(i).DocDetailID
-                            dd.MAT_ID_LOT = data.DocDetailList(i).MaterialCode
                             dd.PRICE_LOT = data.DocDetailList(i).PricePerUnit
-                            dd.QTY_LOT = data.DocDetailList(i).UnitSmallAmount
-                            dd.UOM_LOT = data.DocDetailList(i).UnitName
-                            dd.MAT_ID = data.DocDetailList(i).MaterialCode
                             dd.PRICE = data.DocDetailList(i).PricePerUnit
+                            'For Receive Stock
+                            dd.MAT_ID_LOT = data.DocDetailList(i).MaterialCode
+                            dd.QTY_LOT = data.DocDetailList(i).Amount
+                            dd.UOM_LOT = data.DocDetailList(i).UnitName
+                            'For Sale
+                            If data.DocDetailList(i).MaterialCode1 = "" Then
+                                dd.MAT_ID = data.DocDetailList(i).MaterialCode
+                            Else
+                                dd.MAT_ID = data.DocDetailList(i).MaterialCode1
+                            End If
                             dd.QTY = data.DocDetailList(i).UnitSmallAmount
-                            dd.UOM = data.DocDetailList(i).UnitName
+                            If data.DocDetailList(i).UnitSmallName = "" Then
+                                dd.UOM = data.DocDetailList(i).UnitName
+                            Else
+                                dd.UOM = data.DocDetailList(i).UnitSmallName
+                            End If
                             dd.TAXCLASS = data.DocDetailList(i).MaterialVATType
                             dd.TOTAL = data.DocDetailList(i).MaterialNetPrice
                             dd.TAX = data.DocDetailList(i).MaterialVAT
@@ -688,11 +711,37 @@ Module ReceiveOrderFromPTTModule
             resultText = "ไม่พบวัตถุดิบที่เลือก"
             Return False
         End If
+        Dim dtUnitSmall As New DataTable
+        Dim selUnitSmallName As String = ""
+        dtUnitSmall = MaterialSQL.ListMaterialUnit(globalVariable.DocDBUtil, globalVariable.DocConn, materialID)
+
         selUnitID = dtMaterialUnit.Rows(0)("SelectUnitID")
         selUnitName = dtMaterialUnit.Rows(0)("UnitLargeName")
         selUnitSmallID = dtMaterialUnit.Rows(0)("UnitSmallID")
-        selMaterialCode = dtMaterialUnit.Rows(0)("MaterialCode")
-        selMaterialName = dtMaterialUnit.Rows(0)("MaterialName")
+        selUnitSmallName = dtUnitSmall.Rows(0)("UnitSmallName")
+
+        If Not IsDBNull(dtMaterialUnit.Rows(0)("PTTCode")) Then
+            selMaterialCode = dtMaterialUnit.Rows(0)("PTTCode")
+        Else
+            If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialCode")) Then
+                selMaterialCode = dtMaterialUnit.Rows(0)("MaterialCode")
+            End If
+        End If
+        If Not IsDBNull(dtMaterialUnit.Rows(0)("PTTName")) Then
+            selMaterialName = dtMaterialUnit.Rows(0)("PTTName")
+        Else
+            If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialName")) Then
+                selMaterialName = dtMaterialUnit.Rows(0)("MaterialName")
+            End If
+        End If
+
+        If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialCode1")) Then
+            selMaterialSupplierCode = dtMaterialUnit.Rows(0)("MaterialCode1")
+        End If
+        If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialName1")) Then
+            selMaterialSupplierName = dtMaterialUnit.Rows(0)("MaterialName1")
+        End If
+
         selUnitSmallAmount = Format((addAmount * dtMaterialUnit.Rows(0)("UnitSmallRatio")) / dtMaterialUnit.Rows(0)("UnitLargeRatio"), "0.0000")
         dbTrans = globalVariable.DocConn.BeginTransaction(IsolationLevel.Serializable)
         Try
@@ -701,7 +750,7 @@ Module ReceiveOrderFromPTTModule
             DocumentPTTSQL.UpdateDocumentDetail(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopID, docDetailId, materialID, addAmount,
                                              discountPercent, discountAmount, pricePerUnit, selTax, materialVATType, selUnitSmallID, selUnitID, selUnitName,
                                              selUnitSmallAmount, selMaterialNetPrice, selMaterialCode, selMaterialName, selMaterialSupplierCode, selMaterialSupplierName, remark, Api60F,
-                                             matTemp, testTemp, testApi)
+                                             matTemp, testTemp, testApi, selUnitSmallName)
             DocumentSQL.UpdateDocSummaryIntoDocument(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopID)
 
             dbTrans.Commit()
@@ -759,6 +808,7 @@ Module ReceiveOrderFromPTTModule
                 DocumentPTTSQL.DeleteDocumentDetailTank(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopId, docDetailId(i))
                 DocumentPTTSQL.SumReceiveOilToDocDetail(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopId)
             Next i
+            DocumentSQL.UpdateDocSummaryIntoDocument(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopId)
             dbTrans.Commit()
         Catch e1 As Exception
             resultText = e1.ToString

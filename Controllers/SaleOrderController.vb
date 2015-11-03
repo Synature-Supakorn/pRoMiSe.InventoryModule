@@ -1,6 +1,7 @@
 ﻿Imports pRoMiSe.DBHelper
 Imports System.Data.SqlClient
 Imports pRoMiSe.Utilitys.Utilitys
+Imports Newtonsoft.Json
 
 Public Class SaleOrderController
     Private globalVariable As New GlobalVariable
@@ -13,7 +14,7 @@ Public Class SaleOrderController
         InventoryModule.GetProperty(globalVariable)
     End Sub
 
-    Public Function ApproveDocument(ByVal documentID As Integer, ByVal documentShopID As Integer,ByRef docData As Document_Data, ByRef resultText As String) As Boolean
+    Public Function ApproveDocument(ByVal documentID As Integer, ByVal documentShopID As Integer, ByRef docData As Document_Data, ByRef resultText As String) As Boolean
         If AdjustOrderModule.ApproveDocument(globalVariable, documentID, documentShopID, resultText) = False Then
             Return False
         End If
@@ -60,9 +61,10 @@ Public Class SaleOrderController
             documentShopId = dtResult.Rows(0)("ShopId")
             Return DocumentModule.LoadDocument(globalVariable, documentId, documentShopId, docData, resultText)
         End If
-        If DocumentModule.CreateNewDocument(globalVariable, documentTypeId, inventoryID, inventoryID, Date.MinValue, docData, resultText) = False Then
+        If DocumentModule.CreateNewDocument(globalVariable, documentTypeId, inventoryID, inventoryID, documentDate, docData, resultText) = False Then
             Return False
         End If
+        
         If AdjustOrderModule.SaveDocumentDataIntoDB(globalVariable, docData.DocumentID, docData.DocumentShopID, inventoryID, documentTypeId, documentDate, documentNote, resultText) = False Then
             Return False
         End If

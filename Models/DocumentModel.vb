@@ -208,6 +208,8 @@ Public Class DocumentDetail_Data
     Public MaterialID As Integer
     Public MaterialCode As String
     Public MaterialName As String
+    Public MaterialCode1 As String
+    Public MaterialName1 As String
     Public Amount As Decimal
     Public PricePerUnit As Decimal
     Public MaterialDiscount As Decimal
@@ -244,6 +246,7 @@ Public Class DocumentDetail_Data
     Public MatTemp As Decimal
     Public TestTemp As Decimal
     Public TestAPI As Decimal
+    Public UnitSmallName As String
 
     Public Shared Function AddOrUpdateDocDetailData(ByVal docDetailList As List(Of DocumentDetail_Data), ByVal docIndex As Integer,
                                                     ByVal docID As Integer, ByVal docShopID As Integer, ByVal docDetailID As Integer,
@@ -257,7 +260,8 @@ Public Class DocumentDetail_Data
                                                     ByVal lastOrderSmallAmount As Decimal, ByVal lastOrderDisplayAmount As Decimal, ByVal lastOrderNetPrice As Decimal,
                                                     ByVal lastOrderTax As Decimal, ByVal lastOrderDate As Date, ByVal refNetPrice As Decimal, ByVal refProductTax As Decimal,
                                                     ByVal stockAmount As Decimal, ByVal diffStockAmount As Decimal, ByVal remark As String, ByVal api60F As String,
-                                                    ByVal matTemp As Decimal, ByVal testTemp As Decimal, ByVal testApi As Decimal)
+                                                    ByVal matTemp As Decimal, ByVal testTemp As Decimal, ByVal testApi As Decimal, ByVal unitSmallName As String,
+                                                    ByVal materialCode1 As String, ByVal materialName1 As String)
 
         Dim docData As DocumentDetail_Data
         If docIndex = -1 Then
@@ -320,6 +324,9 @@ Public Class DocumentDetail_Data
         docData.MatTemp = matTemp
         docData.TestTemp = testTemp
         docData.TestAPI = testApi
+        docData.UnitSmallName = unitSmallName
+        docData.MaterialCode1 = materialCode1
+        docData.MaterialName1 = materialName1
         Return docData
     End Function
    

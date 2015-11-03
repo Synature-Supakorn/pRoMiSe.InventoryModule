@@ -242,8 +242,6 @@ Module AdjustOrderModule
         updateDate = Now
         strUpdateDate = FormatDateTime(updateDate)
         newSend = 0
-
-
         dbTrans = globalVariable.DocConn.BeginTransaction(IsolationLevel.Serializable)
         Try
             DocumentSQL.UpdateDocument(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentID, inventoryID, inventoryID, strDocDate, strDueDate, Trim(documentNote), Trim(invoiceReference), strUpdateDate, globalVariable.StaffID)

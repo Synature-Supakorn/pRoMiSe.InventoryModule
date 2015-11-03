@@ -27,6 +27,7 @@ Public Class MaterialController
         Dim dtMaterials As New DataTable
         Dim dtUnits As New DataTable
         Dim defaultTaxType As Integer = 99
+
         dtMaterials = MaterialSQL.ListMaterial(globalVariable.DocDBUtil, globalVariable.DocConn, materialGroupID, materialDeptID)
         dtUnits = MaterialSQL.ListMaterialUnit(globalVariable.DocDBUtil, globalVariable.DocConn)
         Return MaterialModule.InsertMaterialFromDataTableToList(globalVariable, dtMaterials, dtUnits, dtMaterialDefaultPrice, defaultTaxType, materialList, resultText)
@@ -39,6 +40,7 @@ Public Class MaterialController
         Dim dtUnits As New DataTable
         Dim dtVendor As New DataTable
         Dim defaultTaxType As Integer = 1
+
         dtVendor = VendorSQL.GetVendorDetail(globalVariable.DocDBUtil, globalVariable.DocConn, vendorId, globalVariable.DocLangID)
         If dtVendor.Rows.Count > 0 Then
             defaultTaxType = dtVendor.Rows(0)("defaulttaxtype")

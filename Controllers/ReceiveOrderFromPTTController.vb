@@ -110,7 +110,9 @@ Public Class ReceiveOrderFromPTTController
 
         dtResult = DocumentSQL.GetDocument(globalVariable.DocDBUtil, globalVariable.DocConn, docData.DocumentID, docData.DocumentShopID, globalVariable.DocLangID)
         Try
+
             Dim docNumber As String = GetDocumentHeader(dtResult.Rows(0)("DocumentTypeHeader"), dtResult.Rows(0)("DocumentYear"), dtResult.Rows(0)("DocumentMonth"), dtResult.Rows(0)("DocumentNumber"), globalVariable.DocYearSettingType)
+
             shipmentNo = "D" & Right(documentDate.Year, 2) & Right(documentDate.Month, 2) & Right((documentDate.Day + 100), 2) & Right(docNumber, 4)
             If deliveryNo = "" Then
                 deliveryNo = "S" & Right(documentDate.Year, 2) & Right(documentDate.Month, 2) & Right((documentDate.Day + 100), 2) & Right(docNumber, 4)
@@ -121,6 +123,7 @@ Public Class ReceiveOrderFromPTTController
             If customerDocNo = "" Then
                 customerDocNo = "R" & Right(documentDate.Year, 2) & Right(documentDate.Month, 2) & Right((documentDate.Day + 100), 2) & Right(docNumber, 4)
             End If
+
         Catch ex As Exception
             shipmentNo = ""
         End Try
@@ -331,11 +334,27 @@ Public Class ReceiveOrderFromPTTController
             Return False
         End If
         Dim dtTank As New DataTable
+        Dim dtPTTTank As New DataTable
+        Dim dtMatOil As New DataTable
         Dim objTank As New List(Of DocumentDetailTank_Data)
-        dtTank = GetDocumentDetailTank(globalVariable.DocDBUtil, globalVariable.DocConn, docDetailId, documentID, documentShopID)
-        If dtTank.Rows.Count > 0 Then
-            UpdateMaterialInDocDetailTank(docDetailId, documentID, documentShopID, dtTank.Rows(0)("TankId"), materailQty, objTank, resultText)
+        Dim expression As String = ""
+        Dim foundRows() As DataRow
+
+        dtPTTTank = DocumentPTTSQL.GetTankDetail(globalVariable.DocDBUtil, globalVariable.DocConn)
+        dtMatOil = DocumentPTTSQL.GetMaterialOil(globalVariable.DocDBUtil, globalVariable.DocConn)
+        expression = "MaterialID=" & materialID
+        foundRows = dtMatOil.Select(expression)
+        If foundRows.GetUpperBound(0) >= 0 Then
+            expression = "Grade_ID=" & foundRows(0)("materialIDRef")
+            foundRows = dtPTTTank.Select(expression)
+            If foundRows.Length < 2 Then
+                dtTank = GetDocumentDetailTank(globalVariable.DocDBUtil, globalVariable.DocConn, docDetailId, documentID, documentShopID)
+                If dtTank.Rows.Count > 0 Then
+                    UpdateMaterialInDocDetailTank(docDetailId, documentID, documentShopID, dtTank.Rows(0)("TankId"), materailQty, objTank, resultText)
+                End If
+            End If
         End If
+
         Return DocumentModule.LoadDocument(globalVariable, documentID, documentShopID, docData, resultText)
     End Function
 

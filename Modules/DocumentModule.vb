@@ -34,12 +34,7 @@ Module DocumentModule
         Try
 
             newDocID = DocumentModule.GetNewDocumentIDFromMaxDocumentID(globalVariable, dbTrans, inventoryID)
-            If documentDate <> Date.MinValue Then
-                strDocDate = FormatDate(documentDate)
-            Else
-                strDocDate = FormatDate(Date.Now)
-            End If
-
+            strDocDate = FormatDate(documentDate)
             DocumentSQL.CreateNewDocument(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, newDocID, inventoryID, inventoryID, toInventoryID, documentTypeID, globalVariable.DOCUMENTSTATUS_WORKING, strDocDate, "NULL", "", strUpdateDate, globalVariable.StaffID)
             newDocumentNumber = DocumentModule.GetAndUpdateDocumentNumber(globalVariable, dbTrans, inventoryID, documentTypeID, documentDate, docYear, docMonth)
             DocumentSQL.InsertDocumentHeader(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, newDocID, inventoryID, documentTypeID, docMonth, docYear, newDocumentNumber, globalVariable.DocLangID)
@@ -48,6 +43,7 @@ Module DocumentModule
             documentData.DocumentID = newDocID
             documentData.DocumentShopID = inventoryID
             documentData.DocumentType = documentTypeID
+
             Return True
         Catch ex As Exception
             resultText = ex.ToString
@@ -1235,6 +1231,13 @@ Module DocumentModule
         If dtVendor.Rows.Count > 0 Then
             docData.DefaultTaxType = dtVendor.Rows(0)("DefaultTaxType")
         End If
+
+        If Not IsDBNull(dtResult.Rows(0)("Remark")) Then
+            docData.Contractor = dtResult.Rows(0)("Remark")
+        Else
+            docData.Contractor = ""
+        End If
+
         LoadDocumentDetail(globalVariable, documentId, documentShopId, docData, resultText)
         docData.DocSummary = CalculateSummaryDocDetailPrice(dtResult)
         Dim tankDetail As New List(Of DocumentDetailTank_Data)
@@ -1308,9 +1311,18 @@ Module DocumentModule
                 Else
                     remark = ""
                 End If
+                Dim unitSmallName As String = ""
                 matTemp = dtResult.Rows(i)("ExtraValue1")
                 testTemp = dtResult.Rows(i)("ExtraValue2")
                 testApi = dtResult.Rows(i)("ExtraValue3")
+                Dim MaterialCode1 As String = ""
+                Dim MaterialName1 As String = ""
+                If Not IsDBNull(dtResult.Rows(i)("SupplierMaterialCode")) Then
+                    MaterialCode1 = dtResult.Rows(i)("SupplierMaterialCode")
+                End If
+                If Not IsDBNull(dtResult.Rows(i)("SupplierMaterialName")) Then
+                    MaterialName1 = dtResult.Rows(i)("SupplierMaterialName")
+                End If
                 DocumentDetail_Data.AddOrUpdateDocDetailData(docData.DocDetailList, -1,
                     dtResult.Rows(i)("DocumentID"), dtResult.Rows(i)("ShopID"), dtResult.Rows(i)("DocDetailID"),
                     0, dtResult.Rows(i)("ProductID"), dtResult.Rows(i)("MaterialCode"),
@@ -1322,7 +1334,7 @@ Module DocumentModule
                     dtResult.Rows(i)("TransferSmallAmount"), dtResult.Rows(i)("ROSmallAmount"), dtResult.Rows(i)("DefaultInCompare"),
                     dclLastAmount, dclDisplayLastAmount, dclLastNetPrice,
                     dclLastTax, dLastDate, refNetPrice, dtResult.Rows(i)("ReferenceProductTax"), dtResult(i)("StockAmount"), dtResult.Rows(i)("DiffStockAmount"),
-                    remark, "", matTemp, testTemp, testApi)
+                    remark, "", matTemp, testTemp, testApi, unitSmallName, MaterialCode1, MaterialName1)
             Next i
 
         End If
@@ -1398,14 +1410,27 @@ Module DocumentModule
                 Else
                     api60F = ""
                 End If
+                Dim unitSmallName As String = ""
+                If Not IsDBNull(dtResult.Rows(i)("ExtraText3")) Then
+                    unitSmallName = dtResult.Rows(i)("ExtraText3")
+                Else
+                    unitSmallName = ""
+                End If
                 matTemp = dtResult.Rows(i)("ExtraValue1")
                 testTemp = dtResult.Rows(i)("ExtraValue2")
                 testApi = dtResult.Rows(i)("ExtraValue3")
-
+                Dim MaterialCode1 As String = ""
+                Dim MaterialName1 As String = ""
+                If Not IsDBNull(dtResult.Rows(i)("SupplierMaterialCode")) Then
+                    MaterialCode1 = dtResult.Rows(i)("SupplierMaterialCode")
+                End If
+                If Not IsDBNull(dtResult.Rows(i)("SupplierMaterialName")) Then
+                    MaterialName1 = dtResult.Rows(i)("SupplierMaterialName")
+                End If
                 DocumentDetail_Data.AddOrUpdateDocDetailData(docData.DocDetailList, -1,
                     dtResult.Rows(i)("DocumentID"), dtResult.Rows(i)("ShopID"), dtResult.Rows(i)("DocDetailID"),
-                    0, dtResult.Rows(i)("ProductID"), dtResult.Rows(i)("MaterialCode"),
-                    dtResult.Rows(i)("MaterialName"), dtResult.Rows(i)("ProductTaxType"), dtResult.Rows(i)("UnitName"),
+                    0, dtResult.Rows(i)("ProductID"), dtResult.Rows(i)("ProductCode"),
+                    dtResult.Rows(i)("ProductName"), dtResult.Rows(i)("ProductTaxType"), dtResult.Rows(i)("UnitName"),
                     dtResult.Rows(i)("UnitID"), dtResult.Rows(i)("ProductUnit"), dtResult.Rows(i)("ProductAmount"), dtResult.Rows(i)("ProductPricePerUnit"),
                     dclTotalPriceBeforeDiscount, dclDiscount, dtResult.Rows(i)("ProductDiscount"),
                     dtResult.Rows(i)("ProductDiscountAmount"), dtResult.Rows(i)("ProductTax"), dtResult.Rows(i)("ProductNetPrice"),
@@ -1413,7 +1438,7 @@ Module DocumentModule
                     dtResult.Rows(i)("TransferSmallAmount"), dtResult.Rows(i)("ROSmallAmount"), dtResult.Rows(i)("DefaultInCompare"),
                     dclLastAmount, dclDisplayLastAmount, dclLastNetPrice,
                     dclLastTax, dLastDate, refNetPrice, dtResult.Rows(i)("ReferenceProductTax"), dtResult(i)("StockAmount"), dtResult.Rows(i)("DiffStockAmount"),
-                    remark, api60F, matTemp, testTemp, testApi)
+                    remark, api60F, matTemp, testTemp, testApi, unitSmallName, MaterialCode1, MaterialName1)
             Next i
         End If
 

@@ -955,6 +955,7 @@ Module DocumentSQL
         strSQL = "select " + selectString + ",mg.MaterialGroupID,mg.MaterialGroupCode,mg.MaterialGroupName from Materials a left outer join MaterialDept md ON a.MaterialDeptID=md.MaterialDeptID " +
                  "left outer join MaterialGroup mg ON md.MaterialGroupID=mg.MaterialGroupID " + whereString +
                  " where a.deleted=0 " + additionalQuery
+        'DocumentSQL.InsertLog(dbUtil, connection, "StockCard", "SearchByCode", "77", strSQL.ToString)
         Return dbUtil.List(strSQL, connection)
     End Function
 
@@ -1269,7 +1270,7 @@ Module DocumentSQL
         End If
         strInvoiceNo = ""
         If taxInvoiceNo <> "" Then
-            strInvoiceNo = " AND d.TaxInvoiceNo Like '%" & taxInvoiceNo & "%"
+            strInvoiceNo = " AND d.TaxInvoiceNo Like '%" & taxInvoiceNo & "%'"
         End If
         strBusinessPlace = ""
         If businessPlace > 0 Then
