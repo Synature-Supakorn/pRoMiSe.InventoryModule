@@ -123,6 +123,13 @@ Public Class MaterialController
         Return MaterialModule.InsertMaterialUnitFromDataTableToList(globalVariable, dtUnits, dtMaterialDefaultPrice, materialUnitList, resultText)
     End Function
 
+    Public Function GetMaterialUnit(ByVal materialID As Integer, ByVal sapUnitId As Integer, ByRef materialUnitList As List(Of ListMaterialUnit_Data), ByRef resultText As String) As Boolean
+        Dim dtUnits As New DataTable
+        Dim dtMaterialDefaultPrice As New DataTable
+        dtUnits = MaterialSQL.ListMaterialUnit(globalVariable.DocDBUtil, globalVariable.DocConn, materialID, sapUnitId)
+        Return MaterialModule.InsertMaterialUnitFromDataTableToList(globalVariable, dtUnits, dtMaterialDefaultPrice, materialUnitList, resultText)
+    End Function
+
     Public Function ListMaterialUnitLarge(ByRef materialUnitList As List(Of ListMaterialUnit_Data), ByRef resultText As String) As Boolean
         Dim dtUnits As New DataTable
         Dim dtMaterialDefaultPrice As New DataTable

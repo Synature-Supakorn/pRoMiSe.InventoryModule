@@ -13,12 +13,13 @@ Public Class ListMaterialDetail_Data
     Public UnitSmallID As Integer
     Public AddUnitLargeID As Integer
     Public AddUnitLargeName As String
+    Public SAPUnitID As Integer
     Public ListUnit As List(Of ListMaterialUnit_Data)
 
     Public Overloads Shared Function NewListMaterial(ByVal materialID As Integer, ByVal deptID As Integer, ByVal materialCode As String,
                                                      ByVal materialName As String, ByVal taxType As Integer, ByVal unitSmallID As Integer,
-                                                     ByVal addUnitLargeID As Integer, ByVal addUnitLargeName As String, ListUnit As List(Of ListMaterialUnit_Data),
-                                                     ByVal materialTaxTypeList As List(Of ListMaterialTaxType_Data)) As ListMaterialDetail_Data
+                                                     ByVal addUnitLargeID As Integer, ByVal addUnitLargeName As String, ByVal sapUnitId As Integer,
+                                                     ListUnit As List(Of ListMaterialUnit_Data), ByVal materialTaxTypeList As List(Of ListMaterialTaxType_Data)) As ListMaterialDetail_Data
         Dim mData As New ListMaterialDetail_Data
         mData.MaterialID = materialID
         mData.MaterialDeptID = deptID

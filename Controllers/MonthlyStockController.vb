@@ -38,12 +38,13 @@ Public Class MonthlyStockController
     Public Function ApproveDocument(ByVal documentID As Integer, ByVal documentShopID As Integer, ByRef docData As Document_Data, ByRef resultText As String) As Boolean
 
         Dim stockNotEnoughStock As New List(Of MaterialNotEnoughStock_Data)
-        If CheckMaterialStockBelowZero(documentID, documentShopID, Date.Now, stockNotEnoughStock, resultText) = False Then
-            DocumentModule.LoadDocument(globalVariable, documentID, documentShopID, docData, resultText)
-            docData.MaterialNotEnoughStock = stockNotEnoughStock
-            resultText = globalVariable.MESSAGE_MATERIALBELOWZERO
-            Return False
-        End If
+        'PTT ไม่ต้องการให้ตรวจสอบสินค้าสต๊อกติดลบ
+        'If CheckMaterialStockBelowZero(documentID, documentShopID, Date.Now, stockNotEnoughStock, resultText) = False Then
+        '    DocumentModule.LoadDocument(globalVariable, documentID, documentShopID, docData, resultText)
+        '    docData.MaterialNotEnoughStock = stockNotEnoughStock
+        '    resultText = globalVariable.MESSAGE_MATERIALBELOWZERO
+        '    Return False
+        'End If
         If CountStockModule.ApproveDocument(globalVariable, globalVariable.DOCUMENTTYPE_MONTHLYSTOCK, documentID, documentShopID, resultText) = False Then
             Return False
         End If
@@ -54,12 +55,13 @@ Public Class MonthlyStockController
                                     ByVal documentDate As Date, ByVal documentNote As String, ByRef docData As Document_Data, ByRef resultText As String) As Boolean
 
         Dim stockNotEnoughStock As New List(Of MaterialNotEnoughStock_Data)
-        If CheckMaterialStockBelowZero(documentID, documentShopID, documentDate, stockNotEnoughStock, resultText) = False Then
-            DocumentModule.LoadDocument(globalVariable, documentID, documentShopID, docData, resultText)
-            docData.MaterialNotEnoughStock = stockNotEnoughStock
-            resultText = globalVariable.MESSAGE_MATERIALBELOWZERO
-            Return False
-        End If
+        'PTT ไม่ต้องการให้ตรวจสอบสินค้าสต๊อกติดลบ
+        'If CheckMaterialStockBelowZero(documentID, documentShopID, documentDate, stockNotEnoughStock, resultText) = False Then
+        '    DocumentModule.LoadDocument(globalVariable, documentID, documentShopID, docData, resultText)
+        '    docData.MaterialNotEnoughStock = stockNotEnoughStock
+        '    resultText = globalVariable.MESSAGE_MATERIALBELOWZERO
+        '    Return False
+        'End If
         If CountStockModule.SaveDocumentDataIntoDB(globalVariable, globalVariable.DOCUMENTTYPE_MONTHLYSTOCK, documentID, documentShopID, inventoryID, documentDate, documentNote, resultText) = False Then
             Return False
         End If

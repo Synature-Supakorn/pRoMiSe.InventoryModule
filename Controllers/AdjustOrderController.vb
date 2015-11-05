@@ -21,19 +21,23 @@ Public Class AdjustOrderController
         If AdjustOrderModule.SaveDocumentDataIntoDB(globalVariable, documentTypeId, documentID, documentShopID, inventoryID, documentDate, documentNote, resultText) = False Then
             Return False
         End If
-        dtDocType = DocumentSQL.GetDocumentTypeRedue(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID, documentTypeId)
-        If dtDocType.Rows.Count > 0 Then
-            If CheckMaterialInStockEnoughForTransferDocument(documentID, documentShopID, documentDate, stockEnough, resultText) = True Then
-                If AdjustOrderModule.ApproveDocument(globalVariable, documentID, documentShopID, resultText) = False Then
-                    Return False
-                End If
-            Else
-                Return False
-            End If
-        Else
-            If AdjustOrderModule.ApproveDocument(globalVariable, documentID, documentShopID, resultText) = False Then
-                Return False
-            End If
+        'PTT ไม่ต้องการให้ตรวจสอบสต๊อกในการปรับสต๊อก
+        'dtDocType = DocumentSQL.GetDocumentTypeRedue(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID, documentTypeId)
+        'If dtDocType.Rows.Count > 0 Then
+        '    If CheckMaterialInStockEnoughForTransferDocument(documentID, documentShopID, documentDate, stockEnough, resultText) = True Then
+        '        If AdjustOrderModule.ApproveDocument(globalVariable, documentID, documentShopID, resultText) = False Then
+        '            Return False
+        '        End If
+        '    Else
+        '        Return False
+        '    End If
+        'Else
+        '    If AdjustOrderModule.ApproveDocument(globalVariable, documentID, documentShopID, resultText) = False Then
+        '        Return False
+        '    End If
+        'End If
+        If AdjustOrderModule.ApproveDocument(globalVariable, documentID, documentShopID, resultText) = False Then
+            Return False
         End If
         Return DocumentModule.LoadDocument(globalVariable, documentID, documentShopID, docData, resultText)
     End Function

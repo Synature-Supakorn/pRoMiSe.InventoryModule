@@ -68,7 +68,7 @@
                     End If
                     materialList.Add(ListMaterialDetail_Data.NewListMaterial(dtMaterial.Rows(i)("MaterialID"), dtMaterial.Rows(i)("MaterialDeptID"),
                                     dtMaterial.Rows(i)("MaterialCode"), dtMaterial.Rows(i)("MaterialName"), defaultTaxType,
-                                    dtMaterial.Rows(i)("UnitSmallID"), defaultUnitLargeId, defaultUnitLargeName, materialUnitList,
+                                    dtMaterial.Rows(i)("UnitSmallID"), defaultUnitLargeId, defaultUnitLargeName, dtMaterial.Rows(i)("SAPUnitID"), materialUnitList,
                                     ListMaterialTaxType_Data.ListMaterialTaxType))
                 Next i
             Else
