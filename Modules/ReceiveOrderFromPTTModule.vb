@@ -23,6 +23,7 @@ Module ReceiveOrderFromPTTModule
         Dim selMaterialSupplierName As String = ""
         Dim dtProperty As New DataTable
         Dim digitDecimal As Integer = 2
+        Dim selSAPUnitID As Integer = 0
         dtProperty = InventorySQL.GetProperty(globalVariable.DocDBUtil, globalVariable.DocConn)
         If dtProperty.Rows.Count > 0 Then
             digitDecimal = dtProperty.Rows(0)("DigitForRoundingDecimal")
@@ -45,7 +46,9 @@ Module ReceiveOrderFromPTTModule
 
         If Not IsDBNull(dtMaterialUnit.Rows(0)("PTTCode")) Then
             selMaterialCode = dtMaterialUnit.Rows(0)("PTTCode")
+            selSAPUnitID = dtMaterialUnit.Rows(0)("SelectUnitID")
         Else
+            selSAPUnitID = 0
             If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialCode")) Then
                 selMaterialCode = dtMaterialUnit.Rows(0)("MaterialCode")
             End If
@@ -73,7 +76,7 @@ Module ReceiveOrderFromPTTModule
                                                       selTotalPriceBeforeDiscount, selDiscountPrice, selTax, selMaterialNetPrice)
             DocumentPTTSQL.InsertDocumentDetail(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopID, selDocDetailID, materialID, addAmount,
                                              FormatDecimal(discountPercent, digitDecimal), FormatDecimal(discountAmount, digitDecimal), pricePerUnit, FormatDecimal(selTax, digitDecimal), materialVATType, selUnitSmallID, selUnitID, selUnitName,
-                                             selUnitSmallAmount, FormatDecimal(selMaterialNetPrice, digitDecimal), selMaterialCode, selMaterialName, selMaterialSupplierCode, selMaterialSupplierName, remark, Api60F, selUnitSmallName)
+                                             selUnitSmallAmount, FormatDecimal(selMaterialNetPrice, digitDecimal), selMaterialCode, selMaterialName, selMaterialSupplierCode, selMaterialSupplierName, remark, Api60F, selUnitSmallName, selSAPUnitID)
             DocumentSQL.UpdateDocSummaryIntoDocument(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopID)
 
             dbTrans.Commit()
@@ -705,7 +708,7 @@ Module ReceiveOrderFromPTTModule
         Dim selMaterialName As String = ""
         Dim selMaterialSupplierCode As String = ""
         Dim selMaterialSupplierName As String = ""
-
+        Dim selSAPUnitID As Integer = 0
         dtMaterialUnit = MaterialSQL.GetMaterialDetailAndUnitRatio(globalVariable.DocDBUtil, globalVariable.DocConn, materialID, materialUnitLargeID, False)
         If dtMaterialUnit.Rows.Count = 0 Then
             resultText = "ไม่พบวัตถุดิบที่เลือก"
@@ -721,8 +724,10 @@ Module ReceiveOrderFromPTTModule
         selUnitSmallName = dtUnitSmall.Rows(0)("UnitSmallName")
 
         If Not IsDBNull(dtMaterialUnit.Rows(0)("PTTCode")) Then
+            selSAPUnitID = dtMaterialUnit.Rows(0)("SelectUnitID")
             selMaterialCode = dtMaterialUnit.Rows(0)("PTTCode")
         Else
+            selSAPUnitID = 0
             If Not IsDBNull(dtMaterialUnit.Rows(0)("MaterialCode")) Then
                 selMaterialCode = dtMaterialUnit.Rows(0)("MaterialCode")
             End If
@@ -750,7 +755,7 @@ Module ReceiveOrderFromPTTModule
             DocumentPTTSQL.UpdateDocumentDetail(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopID, docDetailId, materialID, addAmount,
                                              discountPercent, discountAmount, pricePerUnit, selTax, materialVATType, selUnitSmallID, selUnitID, selUnitName,
                                              selUnitSmallAmount, selMaterialNetPrice, selMaterialCode, selMaterialName, selMaterialSupplierCode, selMaterialSupplierName, remark, Api60F,
-                                             matTemp, testTemp, testApi, selUnitSmallName)
+                                             matTemp, testTemp, testApi, selUnitSmallName, selSAPUnitID)
             DocumentSQL.UpdateDocSummaryIntoDocument(globalVariable.DocDBUtil, globalVariable.DocConn, dbTrans, documentId, documentShopID)
 
             dbTrans.Commit()

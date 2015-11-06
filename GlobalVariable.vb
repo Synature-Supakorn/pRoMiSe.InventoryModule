@@ -82,7 +82,8 @@ Public Class GlobalVariable
     Public Const MESSAGE_DATANOTFOUND As String = "ไม่พบข้อมูลในระบบ"
     Public Const MESSAGE_MATERIALNOTFOUND As String = "ไม่พบข้อมูลสินค้าในระบบ"
     Public Const MESSAGE_NOTENOUGHSTOCK As String = "สต๊อกสินค้าในระบบไม่เพียงพอ"
-    Public Const MESSAGE_FORWARDSTOCKS As String = "ไม่สามารถทำการบันทึกข้อมูลเอกสารนี้ได้ เนื่องจากคลังสินค้าได้มีการยกยอดสต๊อกผ่านเดือนของวันที่ของเอกสารมาแล้ว"
+    Public Const MESSAGE_FORWARDSTOCKS As String = "ไม่สามารถทำการบันทึกข้อมูลเอกสารนี้ได้ เนื่องจากระบบมีการปรับสต๊อกจากการนับสต๊อกจริงไปแล้ว"
+    Public Const MESSAGE_CANCELDOCUMENT As String = "ไม่สามารถทำการยกเลิกข้อมูลเอกสารนี้ได้ เนื่องจากระบบมีการปรับสต๊อกจากการนับสต๊อกจริงไปแล้ว"
     Public Const MESSAGE_INVALIDDATECOUNTSTOCK As String = "วันที่เอกสารนับสต๊อกไม่ถูกต้อง"
     Public Const MESSAGE_MATERIALBELOWZERO As String = "พบสินค้าบางรายการที่มีจำนวนติดลบในระบบ จึงไม่สามารถอนุมัติเอกสารนี้ได้"
 

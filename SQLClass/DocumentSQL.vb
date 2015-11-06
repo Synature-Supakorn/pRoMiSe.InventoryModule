@@ -129,7 +129,7 @@ Module DocumentSQL
 
         Return index
     End Function
-     
+
     Friend Function ApproveDocument(ByVal dbUtil As CDBUtil, ByVal connection As SqlConnection, ByVal objTrans As SqlTransaction, ByVal documentId As Integer,
                                            ByVal documentShopId As Integer, ByVal approveBy As Integer, ByVal updateDate As String) As Integer
         Dim strSQL As String
@@ -519,7 +519,7 @@ Module DocumentSQL
             dbUtil.sqlExecute("IF OBJECT_ID('" + dummyTableName + "', 'U') IS NOT NULL DROP TABLE " + dummyTableName, connection)
             dbUtil.sqlExecute("create table " + dummyTableName + " (MaterialID int, TotalPrice decimal(18,4), TotalAmount decimal(18,4), BeginningPricePerUnit decimal(18,4), BeginningAmount decimal(18,4), PricePerUnit decimal(18,4), RecTotalPrice decimal(18,4), RecTotalAmount decimal(18,4), PRIMARY KEY (MaterialID))", connection)
             dbUtil.sqlExecute("insert into " + dummyTableName + strSQL, connection)
-            
+
             dbUtil.sqlExecute("IF OBJECT_ID('" + dummyTableName + "_Stock', 'U') IS NOT NULL DROP TABLE " + dummyTableName + "_Stock", connection)
             dbUtil.sqlExecute("IF OBJECT_ID('" + dummyTableName + "_Begin', 'U') IS NOT NULL DROP TABLE " + dummyTableName + "_Begin", connection)
             dbUtil.sqlExecute("IF OBJECT_ID('" + dummyTableName + "_Rec', 'U') IS NOT NULL DROP TABLE " + dummyTableName + "_Rec", connection)
@@ -748,7 +748,7 @@ Module DocumentSQL
                  "Order by dd.DocumentID, dd.ShopID, dd.DocDetailID "
         Return dbUtil.List(strSQL, connection)
     End Function
-   
+
     Friend Function GetDocumentDetail(ByVal dbUtil As CDBUtil, ByVal connection As SqlConnection, ByVal objTrans As SqlTransaction, ByVal documentId As Integer, ByVal documentShopId As Integer) As DataTable
         Dim strSQL As String
         strSQL = "Select dd.*, m.MaterialID, m.MaterialCode, m.MaterialName, m.UnitSmallID, m.MaterialTaxType " & _
@@ -804,8 +804,21 @@ Module DocumentSQL
         Dim strSQL As String
         strSQL = "Select Max(DocumentDate) as DocumentDate " & _
                  "From Document " & _
-                 "Where DocumentTypeID IN (" & GlobalVariable.DOCUMENTTYPE_TRANSFERSTOCK & ") AND ProductLevelID = " & productLevelID & " AND DocumentStatus = 2 "
+                 "Where DocumentTypeID IN (" & GlobalVariable.DOCUMENTTYPE_TRANSFERSTOCK & "," & GlobalVariable.DOCUMENTTYPE_WEEKLYSTOCK & "," & GlobalVariable.DOCUMENTTYPE_DAILYSTOCK & ") AND ProductLevelID = " & productLevelID & " AND DocumentStatus = 2 "
         Return dbUtil.List(strSQL, connection)
+    End Function
+
+    Friend Function CheckCountStock(ByVal dbUtil As CDBUtil, ByVal connection As SqlConnection, ByVal inventoryId As Integer, ByVal selEndDate As String) As Boolean
+        Dim strSQL As String
+        Dim dt As New DataTable
+        strSQL = "Select * From Document " & _
+                 "Where DocumentTypeID IN (" & GlobalVariable.DOCUMENTTYPE_TRANSFERSTOCK & "," & GlobalVariable.DOCUMENTTYPE_WEEKLYSTOCK & "," & GlobalVariable.DOCUMENTTYPE_DAILYSTOCK & ") AND ProductLevelID = " & inventoryId & " AND DocumentStatus = 2 AND DocumentDate=" & selEndDate
+        dt = dbUtil.List(strSQL, connection)
+        If dt.Rows.Count > 0 Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
     Friend Function GetDocumentFromReference(ByVal dbUtil As CDBUtil, ByVal connection As SqlConnection, ByVal refDocumentID As Integer, ByVal refDocumentShopID As Integer,
@@ -1437,44 +1450,51 @@ Module DocumentSQL
         Dim fristDate As Date
         Dim strStartDate, strEndDate As String
         fristDay = startDate.Day
-
+        
         Select Case fristDay
             Case Is = 1
                 strStartDate = FormatDate(startDate)
                 strEndDate = FormatDate(endDate)
-                strSQL = " select 0 AS Ordering, 0 AS DocumentTypeGroupID,'Beginning' AS GroupHeader,ProductID As MaterialID,UnitSmallAmount As NetSmallAmount," &
-                        " UnitSmallAmount AS TotalAmount,ProductNetPrice, dt.CalculateStandardProfitLoss FROM document aa, docdetail bb, documenttype dt " &
+                strSQL = "(select 0 AS Ordering, 0 AS DocumentTypeGroupID,'Beginning' AS GroupHeader,ProductID As MaterialID,UnitSmallAmount As NetSmallAmount," &
+                        " UnitSmallAmount AS TotalAmount,ProductNetPrice AS ProductNetPrice, 0 As CalculateStandardProfitLoss FROM document aa, docdetail bb, documenttype dt " &
                         " where aa.DocumentID=bb.DocumentID AND aa.ShopID=bb.ShopID AND aa.DocumentTypeID=10  AND aa.DocumentStatus=2 AND aa.DocumentTypeID=dt.DocumentTypeID " &
-                        " AND dt.LangID=1 AND dt.ShopID=aa.ProductLevelID AND aa.ProductLevelID=" + inventoryid.ToString + " AND aa.DocumentDate = " + strStartDate + " "
+                        " AND dt.LangID=1 AND dt.ShopID=aa.ProductLevelID AND aa.ProductLevelID=" + inventoryid.ToString + " AND aa.DocumentDate = " + strStartDate + ") "
             Case Else
                 fristDate = startDate.AddDays(1 - startDate.Day)
                 strStartDate = FormatDate(fristDate)
                 strEndDate = FormatDate(startDate)
-                strSQL = " select 0 AS Ordering, 0 AS DocumentTypeGroupID,'Beginning' AS GroupHeader,ProductID As MaterialID,UnitSmallAmount As NetSmallAmount," &
-                     " UnitSmallAmount AS TotalAmount,ProductNetPrice, dt.CalculateStandardProfitLoss FROM document aa, docdetail bb, documenttype dt " &
+                strSQL = "(select 0 AS Ordering, 0 AS DocumentTypeGroupID,'Beginning' AS GroupHeader,ProductID As MaterialID," &
+                     " sum(UnitSmallAmount * dt.movementinstock) As NetSmallAmount, sum(UnitSmallAmount * dt.movementinstock) AS TotalAmount,sum(bb.ProductNetPrice * dt.movementinstock) as ProductNetPrice, 0 as CalculateStandardProfitLoss" &
+                     " FROM document aa, docdetail bb, documenttype dt " &
                      " where aa.DocumentID=bb.DocumentID AND aa.ShopID=bb.ShopID AND aa.DocumentStatus=2 AND aa.DocumentTypeID=dt.DocumentTypeID " &
-                     " AND dt.LangID=1 AND dt.ShopID=aa.ProductLevelID AND aa.ProductLevelID=" + inventoryid.ToString + " AND aa.DocumentDate >= " + strStartDate + " AND aa.DocumentDate < " + strEndDate + " "
+                     " AND dt.LangID=1 AND dt.ShopID=aa.ProductLevelID AND aa.ProductLevelID=" + inventoryid.ToString + " AND aa.DocumentDate >= " + strStartDate + " AND aa.DocumentDate < " + strEndDate + " " &
+                     " group by productid )"
         End Select
         strStartDate = FormatDate(startDate)
         strEndDate = FormatDate(endDate)
-        strSQL &= " UNION select d.Ordering, d.DocumentTypeGroupID,d.GroupHeader, ProductID As MaterialID ,sum(e.MovementInStock*b.UnitSmallAmount) As NetSmallAmount, " &
-                 " sum(b.UnitSmallAmount) AS TotalAmount, sum(ProductNetPrice) As ProductNetPrice,e.CalculateStandardProfitLoss from document a, docdetail b, documentTypeGroupValue c, " &
-                 " DocumentTypeGroup d, DocumentType e where a.DocumentID=b.DocumentID AND a.ShopID=b.ShopID AND a.DocumentTypeID=c.DocumentTypeID  " &
-                 " AND c.DocumentTypeGroupID = d.DocumentTypeGroupID  AND a.DocumentTypeID=e.DocumentTypeID AND a.ShopID=e.ShopID  AND d.Ordering > 0 AND a.DocumentStatus=2 " &
-                 " AND a.ProductLevelID=" + inventoryid.ToString + " AND e.LangID=1  AND a.DocumentDate >= " + strStartDate + " AND a.DocumentDate <= " + strEndDate +
-                 " group by d.Ordering,d.DocumentTypeGroupID,d.GroupHeader, ProductID,e.CalculateStandardProfitLoss   " &
-                 " UNION select d.Ordering,d.DocumentTypeGroupID,d.GroupHeader, ProductID As MaterialID ,sum(e.MovementInStock*b.UnitSmallAmount) As NetSmallAmount, " &
-                 " sum(b.UnitSmallAmount) AS TotalAmount, sum(ProductNetPrice) As ProductNetPrice,e.CalculateStandardProfitLoss from document a, docdetail b, documentTypeGroupValue " &
-                 " c, DocumentTypeGroup d, DocumentType e where a.DocumentID=b.DocumentID AND a.ShopID=b.ShopID AND a.DocumentTypeID=c.DocumentTypeID " &
-                 " AND c.DocumentTypeGroupID = d.DocumentTypeGroupID  AND a.DocumentTypeID=e.DocumentTypeID AND a.ShopID=e.ShopID  AND d.Ordering < 0 " &
-                 " AND a.DocumentStatus=2 AND a.ProductLevelID=" + inventoryid.ToString + " AND e.LangID=1  " &
-                 " AND a.DocumentDate >= " + strStartDate + " AND a.DocumentDate <= " + strEndDate + " " &
-                 " group by d.Ordering,d.DocumentTypeGroupID,d.GroupHeader, ProductID,CalculateStandardProfitLoss "
+
+        strSQL &= " UNION "
+        strSQL &= "(select d.Ordering, d.DocumentTypeGroupID,d.GroupHeader, ProductID As MaterialID ,sum(e.MovementInStock*b.UnitSmallAmount) As NetSmallAmount, " &
+                    " sum(b.UnitSmallAmount) AS TotalAmount, sum(ProductNetPrice) As ProductNetPrice,e.CalculateStandardProfitLoss from document a, docdetail b, documentTypeGroupValue c, " &
+                    " DocumentTypeGroup d, DocumentType e where a.DocumentID=b.DocumentID AND a.ShopID=b.ShopID AND a.DocumentTypeID=c.DocumentTypeID  " &
+                    " AND c.DocumentTypeGroupID = d.DocumentTypeGroupID  AND a.DocumentTypeID=e.DocumentTypeID AND a.ShopID=e.ShopID  AND d.Ordering > 0 AND a.DocumentStatus=2 " &
+                    " AND a.ProductLevelID=" + inventoryid.ToString + " AND e.LangID=1  AND a.DocumentDate >= " + strStartDate + " AND a.DocumentDate <= " + strEndDate +
+                    " group by d.Ordering,d.DocumentTypeGroupID,d.GroupHeader, ProductID,e.CalculateStandardProfitLoss)"
+        strSQL &= " UNION "
+        strSQL &= "(select d.Ordering,d.DocumentTypeGroupID,d.GroupHeader, ProductID As MaterialID ,sum(e.MovementInStock*b.UnitSmallAmount) As NetSmallAmount, " &
+                    " sum(b.UnitSmallAmount) AS TotalAmount, sum(ProductNetPrice) As ProductNetPrice,e.CalculateStandardProfitLoss from document a, docdetail b, documentTypeGroupValue " &
+                    " c, DocumentTypeGroup d, DocumentType e where a.DocumentID=b.DocumentID AND a.ShopID=b.ShopID AND a.DocumentTypeID=c.DocumentTypeID " &
+                    " AND c.DocumentTypeGroupID = d.DocumentTypeGroupID  AND a.DocumentTypeID=e.DocumentTypeID AND a.ShopID=e.ShopID  AND d.Ordering < 0 " &
+                    " AND a.DocumentStatus=2 AND a.ProductLevelID=" + inventoryid.ToString + " AND e.LangID=1  " &
+                    " AND a.DocumentDate >= " + strStartDate + " AND a.DocumentDate <= " + strEndDate + " " &
+                    " group by d.Ordering,d.DocumentTypeGroupID,d.GroupHeader, ProductID,CalculateStandardProfitLoss)"
 
         dbUtil.sqlExecute("IF OBJECT_ID('DummyStockCard', 'U') IS NOT NULL DROP TABLE DummyStockCard", connection)
         dbUtil.sqlExecute("create table DummyStockCard (Ordering int, DocumentTypeGroupID int, GroupHeader varchar(50), MaterialID int, NetSmallAmount decimal(18,4),TotalAmount decimal(18,4), ProductNetPrice decimal(18,4),CalculateStandardProfitLoss int)", connection)
+        'Check Log
+        DocumentSQL.InsertLog(dbUtil, connection, "StockCard", "SearchByCode", "77", strSQL.ToString)
         Return dbUtil.sqlExecute("insert into DummyStockCard(Ordering,DocumentTypeGroupID,GroupHeader,MaterialID,NetSmallAmount,TotalAmount,ProductNetPrice,CalculateStandardProfitLoss) " + strSQL, connection)
-
+       
     End Function
 
     Friend Function UpdateDocument(ByVal dbUtil As CDBUtil, ByVal connection As SqlConnection, ByVal objTrans As SqlTransaction, ByVal documentId As Integer,

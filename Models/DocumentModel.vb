@@ -247,7 +247,7 @@ Public Class DocumentDetail_Data
     Public TestTemp As Decimal
     Public TestAPI As Decimal
     Public UnitSmallName As String
-
+    Public SAPUnitID As Integer
     Public Shared Function AddOrUpdateDocDetailData(ByVal docDetailList As List(Of DocumentDetail_Data), ByVal docIndex As Integer,
                                                     ByVal docID As Integer, ByVal docShopID As Integer, ByVal docDetailID As Integer,
                                                     ByVal docDetailOrdering As Integer, ByVal materialID As Integer, ByVal materialCode As String,
@@ -261,7 +261,7 @@ Public Class DocumentDetail_Data
                                                     ByVal lastOrderTax As Decimal, ByVal lastOrderDate As Date, ByVal refNetPrice As Decimal, ByVal refProductTax As Decimal,
                                                     ByVal stockAmount As Decimal, ByVal diffStockAmount As Decimal, ByVal remark As String, ByVal api60F As String,
                                                     ByVal matTemp As Decimal, ByVal testTemp As Decimal, ByVal testApi As Decimal, ByVal unitSmallName As String,
-                                                    ByVal materialCode1 As String, ByVal materialName1 As String)
+                                                    ByVal materialCode1 As String, ByVal materialName1 As String, ByVal SAPUnitID As Integer)
 
         Dim docData As DocumentDetail_Data
         If docIndex = -1 Then
@@ -327,6 +327,7 @@ Public Class DocumentDetail_Data
         docData.UnitSmallName = unitSmallName
         docData.MaterialCode1 = materialCode1
         docData.MaterialName1 = materialName1
+        docData.SAPUnitID = SAPUnitID
         Return docData
     End Function
    

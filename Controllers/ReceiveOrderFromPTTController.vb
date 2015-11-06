@@ -90,6 +90,12 @@ Public Class ReceiveOrderFromPTTController
         Dim dtShift As New DataTable
         Dim dtResult As New DataTable
 
+        If documentTypeId = 41 Then
+            If CheckValidDocumentDateForSaveNewDocument(globalVariable, inventoryID, documentDate, resultText) = False Then
+                Return False
+            End If
+        End If
+
         dtShift = DocumentSQL.ListShiftData(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID)
         If dtShift.Rows.Count > 0 Then
             shiftDay = dtShift.Rows(0)("DAY_ID")

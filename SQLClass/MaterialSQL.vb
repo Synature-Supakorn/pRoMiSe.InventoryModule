@@ -58,7 +58,7 @@ Module MaterialSQL
         strSQL = "Select m.MaterialID, ul.UnitLargeID, ur.UnitSmallID, ul.UnitLargeName, us.UnitSmallName, ur.UnitLargeRatio, ur.UnitSmallRatio," &
                  "0 as IsDefault, 0 as IsLockPrice " &
                  "From Materials m, UnitLarge ul, UnitRatio ur, UnitSmall us " &
-                 "Where ur.Deleted = 0  AND m.MaterialIDRef=0 AND ur.UnitSmallID = m.UnitSmallID And ur.UnitLargeID = ul.UnitLargeID And " &
+                 "Where ur.Deleted = 0 AND ur.UnitSmallID = m.UnitSmallID And ur.UnitLargeID = ul.UnitLargeID And " &
                  "ur.UnitSmallID = us.UnitSmallID  " &
                  "Order by m.MaterialID, ur.UnitSmallRatio"
         Return dbUtil.List(strSQL, objCnn)
@@ -69,7 +69,7 @@ Module MaterialSQL
         strSQL = "Select m.MaterialID, ul.UnitLargeID, ur.UnitSmallID, ul.UnitLargeName, us.UnitSmallName, ur.UnitLargeRatio, ur.UnitSmallRatio," &
                  "0 as IsDefault, 0 as IsLockPrice " &
                  "From Materials m, UnitLarge ul, UnitRatio ur, UnitSmall us " &
-                 "Where ur.Deleted = 0 AND m.MaterialIDRef=0 AND ur.UnitSmallID = m.UnitSmallID And ur.UnitLargeID = ul.UnitLargeID And m.MaterialID=" & materialId & " AND " &
+                 "Where ur.Deleted = 0 AND ur.UnitSmallID = m.UnitSmallID And ur.UnitLargeID = ul.UnitLargeID And m.MaterialID=" & materialId & " AND " &
                  "ur.UnitSmallID = us.UnitSmallID  " &
                  "Order by m.MaterialID, ur.UnitSmallRatio"
         Return dbUtil.List(strSQL, objCnn)
@@ -80,7 +80,7 @@ Module MaterialSQL
         strSQL = "Select m.MaterialID, ul.UnitLargeID, ur.UnitSmallID, ul.UnitLargeName, us.UnitSmallName, ur.UnitLargeRatio, ur.UnitSmallRatio," &
                  "0 as IsDefault, 0 as IsLockPrice " &
                  "From Materials m, UnitLarge ul, UnitRatio ur, UnitSmall us " &
-                 "Where ur.Deleted = 0 AND m.MaterialIDRef=0 AND ur.UnitSmallID = m.UnitSmallID And ur.UnitLargeID = ul.UnitLargeID And m.MaterialID=" & materialId & " AND " &
+                 "Where ur.Deleted = 0 AND ur.UnitSmallID = m.UnitSmallID And ur.UnitLargeID = ul.UnitLargeID And m.MaterialID=" & materialId & " AND " &
                  "ur.UnitSmallID = us.UnitSmallID  "
         If sapUnitId > 0 Then
             strSQL &= " AND ur.UnitLargeID=" & sapUnitId
@@ -109,6 +109,7 @@ Module MaterialSQL
                     " ur.Deleted = 0 AND m.Deleted = 0  " & strWhereGroup
         End If
         strSQL &= " Order By m.MaterialCode, m.MaterialName "
+        DocumentSQL.InsertLog(dbUtil, objCnn, "check unit", "check unit", "77", strSQL.ToString)
         Return dbUtil.List(strSQL, objCnn)
     End Function
 

@@ -64,15 +64,15 @@ Module DocumentPTTSQL
                                                ByVal taxType As Integer, ByVal materialUnitSmallID As Integer, ByVal selectUnitID As Integer, ByVal selectUnitName As String,
                                                ByVal unitSmallAmount As Decimal, ByVal materialNetPrice As Decimal, ByVal materialCode As String,
                                                ByVal materialName As String, ByVal supplierMaterialCode As String, ByVal supplierMaterialName As String,
-                                               ByVal remark As String, ByVal Api60F As String, ByVal unitSmallName As String) As String
+                                               ByVal remark As String, ByVal Api60F As String, ByVal unitSmallName As String, ByVal unitSAP As Integer) As String
         Dim strSQL As String = ""
         strSQL = "Insert INTO DocDetail(DocDetailID, DocumentID, ShopID, ProductID, ProductUnit, ProductAmount, " &
                  "ProductDiscount, ProductDiscountAmount, ProductPricePerUnit,ProductTax, ProductTaxType, UnitID, " &
-                 "UnitName, UnitSmallAmount, ProductNetPrice,ProductCode,ProductName,SupplierMaterialCode,SupplierMaterialName,ExtraText1,ExtraText2,ExtraText3) " &
+                 "UnitName, UnitSmallAmount, ProductNetPrice,ProductCode,ProductName,SupplierMaterialCode,SupplierMaterialName,ExtraText1,ExtraText2,ExtraText3,AdjustLinkGroup) " &
                  "Values(" & docDetailID & ", " & documentID & ", " & documentShopID & ", " & materialID & ", " & materialUnitSmallID & ", " & materialAmount &
                  "," & percentDiscount & ", " & amountDiscount & "," & pricePerUnit & ", " & materialTax & ", " & taxType & ", " & selectUnitID &
                  ",'" & selectUnitName & "', " & unitSmallAmount & "," & materialNetPrice & ",'" & materialCode & "','" & materialName &
-                 "','" & supplierMaterialCode & "','" & supplierMaterialName & "','" & ReplaceSuitableStringForSQL(remark) & "','" & ReplaceSuitableStringForSQL(Api60F) & "','" & ReplaceSuitableStringForSQL(unitSmallName) & "')"
+                 "','" & supplierMaterialCode & "','" & supplierMaterialName & "','" & ReplaceSuitableStringForSQL(remark) & "','" & ReplaceSuitableStringForSQL(Api60F) & "','" & ReplaceSuitableStringForSQL(unitSmallName) & "'," & unitSAP & ")"
         Return dbUtil.sqlExecute(strSQL, connection, objTrans)
     End Function
 
@@ -141,7 +141,8 @@ Module DocumentPTTSQL
                                                  ByVal taxType As Integer, ByVal materialUnitSmallID As Integer, ByVal selectUnitID As Integer, ByVal selectUnitName As String,
                                                  ByVal unitSmallAmount As Decimal, ByVal materialNetPrice As Decimal, ByVal materialCode As String,
                                                  ByVal materialName As String, ByVal supplierMaterialCode As String, ByVal supplierMaterialName As String,
-                                                 ByVal remark As String, ByVal Api60F As String, ByVal matTemp As Decimal, ByVal testTemp As Decimal, ByVal testApi As Decimal, ByVal unitSmallName As String) As Integer
+                                                 ByVal remark As String, ByVal Api60F As String, ByVal matTemp As Decimal, ByVal testTemp As Decimal, ByVal testApi As Decimal,
+                                                 ByVal unitSmallName As String, ByVal unitSAP As Integer) As Integer
         Dim strSQL As String
         strSQL = "Update DocDetail " &
                  "Set ProductID = " & materialID & ", ProductUnit = " & materialUnitSmallID &
@@ -152,7 +153,7 @@ Module DocumentPTTSQL
                  "',UnitSmallAmount = " & unitSmallAmount & ", ProductNetPrice = " & materialNetPrice &
                  ", ProductCode='" & materialCode & "',ProductName='" & materialName & "',SupplierMaterialCode='" & supplierMaterialCode & _
                  "',SupplierMaterialName='" & supplierMaterialName & "',ExtraText1='" & Trim(ReplaceSuitableStringForSQL(remark)) & "',ExtraText2='" & Trim(ReplaceSuitableStringForSQL(Api60F)) & "'" & _
-                 ",ExtraValue1=" & matTemp & ",ExtraValue2=" & testTemp & ",ExtraValue3=" & testApi & ",ExtraText3='" & Trim(ReplaceSuitableStringForSQL(unitSmallName)) & "'" & _
+                 ",ExtraValue1=" & matTemp & ",ExtraValue2=" & testTemp & ",ExtraValue3=" & testApi & ",ExtraText3='" & Trim(ReplaceSuitableStringForSQL(unitSmallName)) & "',AdjustLinkGroup=" & unitSAP & _
                  " Where DocDetailID = " & docDetailID & " AND DocumentID = " & documentID & " AND ShopID = " & documentShopID
         Return dbUtil.sqlExecute(strSQL, connection, objTrans)
     End Function

@@ -234,23 +234,25 @@ Module DocumentModule
     End Function
 
     Friend Function CheckValidDocumentDateForSaveNewDocument(ByVal globalVariable As GlobalVariable, ByVal invendoryId As Integer, ByVal saveDocumentDate As Date, ByRef resultText As String) As Boolean
-        Dim lastTransferDay, lastEndDay As Date
+        Dim lastTransferDay As Date
         'Check Document Date and Last End Day
-        lastEndDay = DocumentModule.GetLastEndDayDocumentDate(globalVariable, invendoryId, lastTransferDay)
         lastTransferDay = DocumentModule.GetLastTransferStockOrCountStockDocumentDate(globalVariable, invendoryId)
-
         If saveDocumentDate < lastTransferDay Then
-            resultText = "ไม่สามารถทำการบันทึกข้อมูลเอกสารนี้ได้ เนื่องจากคลังสินค้าได้มีการยกยอดสต๊อกผ่านเดือนของวันที่ของเอกสารมาแล้ว"
+            resultText = globalVariable.MESSAGE_FORWARDSTOCKS & " เมื่อวันที่ " & Format(lastTransferDay, "dd-MMMM-yyyy")
             Return False
         End If
-        If saveDocumentDate < lastEndDay Then
-            resultText = "ไม่สามารถทำการบันทึกข้อมูลเอกสารนี้ได้ เนื่องจากวันที่ของเอกสารอยู่ก่อนหน้าการทำ End Day ของคลังสินค้านี้ไปแล้ว" & vbLf &
-               "(End Day ครั้งล่าสุดเมื่อวันที่ " & Format(lastEndDay, "dd-MMMM-yyyy") & ")"
-            Return False
-        End If
+        'PTT ไม่ต้องการให้ตรวจสอบการปิดสิ้นวัน
+        'Dim lastEndDay As Date
+        'lastEndDay = DocumentModule.GetLastEndDayDocumentDate(globalVariable, invendoryId, lastTransferDay)
+        'If saveDocumentDate < lastEndDay Then
+        '    resultText = "ไม่สามารถทำการบันทึกข้อมูลเอกสารนี้ได้ เนื่องจากวันที่ของเอกสารอยู่ก่อนหน้าการทำ End Day ของคลังสินค้านี้ไปแล้ว" & vbLf &
+        '       "(End Day ครั้งล่าสุดเมื่อวันที่ " & Format(lastEndDay, "dd-MMMM-yyyy") & ")"
+        '    Return False
+        'End If
         resultText = ""
         Return True
     End Function
+
 
     Friend Function CalculateSummaryDocDetailPrice(ByVal docDetailList As List(Of DocumentDetail_Data), ByVal docDetailTotalPriceRoundType As RoundType) As DocumentPriceSummary_Data
         Dim docData As DocumentDetail_Data
@@ -1334,7 +1336,7 @@ Module DocumentModule
                     dtResult.Rows(i)("TransferSmallAmount"), dtResult.Rows(i)("ROSmallAmount"), dtResult.Rows(i)("DefaultInCompare"),
                     dclLastAmount, dclDisplayLastAmount, dclLastNetPrice,
                     dclLastTax, dLastDate, refNetPrice, dtResult.Rows(i)("ReferenceProductTax"), dtResult(i)("StockAmount"), dtResult.Rows(i)("DiffStockAmount"),
-                    remark, "", matTemp, testTemp, testApi, unitSmallName, MaterialCode1, MaterialName1)
+                    remark, "", matTemp, testTemp, testApi, unitSmallName, MaterialCode1, MaterialName1, dtResult(i)("AdjustLinkGroup"))
             Next i
 
         End If
@@ -1438,7 +1440,7 @@ Module DocumentModule
                     dtResult.Rows(i)("TransferSmallAmount"), dtResult.Rows(i)("ROSmallAmount"), dtResult.Rows(i)("DefaultInCompare"),
                     dclLastAmount, dclDisplayLastAmount, dclLastNetPrice,
                     dclLastTax, dLastDate, refNetPrice, dtResult.Rows(i)("ReferenceProductTax"), dtResult(i)("StockAmount"), dtResult.Rows(i)("DiffStockAmount"),
-                    remark, api60F, matTemp, testTemp, testApi, unitSmallName, MaterialCode1, MaterialName1)
+                    remark, api60F, matTemp, testTemp, testApi, unitSmallName, MaterialCode1, MaterialName1, dtResult(i)("AdjustLinkGroup"))
             Next i
         End If
 
@@ -1477,8 +1479,8 @@ Module DocumentModule
                 Dim lastEndDay As Date
                 lastEndDay = DocumentModule.GetLastEndDayDocumentDate(globalVariable, inventoryId, New Date)
                 If lastEndDay <> Date.MinValue Then
-                    If documentDate <= lastEndDay Then
-                        resultText = "ไม่สามารถทำการยกเลิกข้อมูลเอกสารนี้ได้ เนื่องจากวันที่ของเอกสารอยู่ก่อนหน้าการทำปรับสต๊อกของคลังสินค้านี้ไปแล้ว"
+                    If documentDate < lastEndDay Then
+                        resultText = globalVariable.MESSAGE_CANCELDOCUMENT
                         Return False
                     End If
                 End If

@@ -36,6 +36,9 @@ Public Class AdjustOrderController
         '        Return False
         '    End If
         'End If
+        If CheckValidDocumentDateForSaveNewDocument(globalVariable, inventoryID, documentDate, resultText) = False Then
+            Return False
+        End If
         If AdjustOrderModule.ApproveDocument(globalVariable, documentID, documentShopID, resultText) = False Then
             Return False
         End If
@@ -52,6 +55,9 @@ Public Class AdjustOrderController
 
     Public Function CreateNewDocument(ByVal documentTypeId As Integer, ByVal inventoryID As Integer, ByVal documentDate As Date, ByVal documentNote As String,
                                       ByRef docData As Document_Data, ByRef resultText As String) As Boolean
+        If CheckValidDocumentDateForSaveNewDocument(globalVariable, inventoryID, documentDate, resultText) = False Then
+            Return False
+        End If
         If DocumentModule.CreateNewDocument(globalVariable, documentTypeId, inventoryID, inventoryID, Date.Now, docData, resultText) = False Then
             Return False
         End If

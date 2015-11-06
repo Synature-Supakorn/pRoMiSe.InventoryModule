@@ -31,6 +31,7 @@ Public Class ListMaterialDetail_Data
         mData.UnitSmallID = unitSmallID
         mData.AddUnitLargeID = addUnitLargeID
         mData.AddUnitLargeName = addUnitLargeName
+        mData.SAPUnitID = sapUnitId
         mData.ListUnit = ListUnit
         mData.ListMaterialTaxType = materialTaxTypeList
         Return mData

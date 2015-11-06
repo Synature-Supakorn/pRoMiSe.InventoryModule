@@ -21,7 +21,7 @@ Module StockCardModule
         Dim GroupDataL As New DataTable
         Dim OnhandStock As Decimal = 0
         Dim varianceStock As Decimal = 0
-
+        Dim checkCountStock As Boolean = False
         dummyTable = "dummy" & GenerateGUID().Replace("-", "")
         strStartDate = FormatDate(startDate)
         strEndDate = FormatDate(endDate)
@@ -35,7 +35,7 @@ Module StockCardModule
             dtTable = DocumentSQL.GetMaterialStock(globalVariable.DocDBUtil, globalVariable.DocConn, materialGroupId, materialDeptId, materialCode, dummyTable, groupData, GroupDataL)
             DocumentSQL.DropTempTable(globalVariable.DocDBUtil, globalVariable.DocConn, dummyTable)
             dtUnit = MaterialSQL.ListMaterialUnit(globalVariable.DocDBUtil, globalVariable.DocConn)
-
+            checkCountStock = DocumentSQL.CheckCountStock(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryId, strEndDate)
             If dtTable.Rows.Count > 0 Then
                 For i As Integer = 0 To dtTable.Rows.Count - 1
                     data = New StockCard_Data
@@ -98,11 +98,11 @@ Module StockCardModule
                         OnhandStock += data.SaleAmount
                     End If
                     data.OnhandAmount = OnhandStock
-                    If Not IsDBNull(dtTable.Rows(i)("NetSmallAmount7")) Then
-                        data.VarianceAmount = Format(dtTable.Rows(i)("NetSmallAmount7") / UnitRatioVal, "##,##0.00;(##,##0.00)")
-                        varianceStock = data.VarianceAmount
-                    End If
-                    If varianceStock <> 0 Then
+                    If checkCountStock = True Then
+                        If Not IsDBNull(dtTable.Rows(i)("NetSmallAmount7")) Then
+                            data.VarianceAmount = Format(dtTable.Rows(i)("NetSmallAmount7") / UnitRatioVal, "##,##0.00;(##,##0.00)")
+                            varianceStock = data.VarianceAmount
+                        End If
                         data.EndingAmount = (data.OnhandAmount + varianceStock)
                     End If
                     stockCardData.Add(data)
@@ -222,6 +222,7 @@ Module StockCardModule
                     If varianceStock <> 0 Then
                         data.EndingAmount = (data.OnhandAmount + varianceStock)
                     End If
+
                     stockCardData.Add(data)
                 Next
             End If
