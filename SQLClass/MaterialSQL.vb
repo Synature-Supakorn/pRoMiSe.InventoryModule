@@ -50,6 +50,7 @@ Module MaterialSQL
                  " Where m.Deleted = 0 AND m.MaterialIDRef=0 And m.UnitSmallID = ur.UnitSmallID " & strDept & _
                  " And (ur.PTTCode Is Not Null Or ur.PTTCode <>'')"
         strSQL &= " Order by MaterialCode, MaterialName "
+
         Return dbUtil.List(strSQL, objCnn)
     End Function
 
@@ -96,7 +97,7 @@ Module MaterialSQL
         If isSearchInUnitRatio = False Then
             strSQL = " Select m.MaterialID, m.MaterialCode, m.MaterialName, m.MaterialDeptID, m.MaterialTaxType, m.UnitSmallID, 0 As SAPUnitID " &
                     " From Materials m " &
-                    " Where m.MaterialCode Like'%" & materialCode & "%' AND m.Deleted = 0  And m. MaterialCode Not In(select pttcode from unitratio where pttcode is not null) " & strWhereGroup
+                    " Where m.MaterialIDRef=0 And m.MaterialCode Like'%" & materialCode & "%' AND m.Deleted = 0  And m. MaterialCode Not In(select pttcode from unitratio where pttcode is not null) " & strWhereGroup
             strSQL &= " Union " &
                " Select m.MaterialID,ur.PTTCode As MaterialCode, ur.PTTName As MaterialName, m.MaterialDeptID, m.MaterialTaxType, m.UnitSmallID, ur.UnitLargeID As SAPUnitID " &
                " From Materials m, unitratio ur " &
@@ -109,7 +110,7 @@ Module MaterialSQL
                     " ur.Deleted = 0 AND m.Deleted = 0  " & strWhereGroup
         End If
         strSQL &= " Order By m.MaterialCode, m.MaterialName "
-        DocumentSQL.InsertLog(dbUtil, objCnn, "check unit", "check unit", "77", strSQL.ToString)
+
         Return dbUtil.List(strSQL, objCnn)
     End Function
 
@@ -138,6 +139,7 @@ Module MaterialSQL
                     " Where m.Deleted = 0 And m.UnitSmallID = ur.UnitSmallID AND m.MaterialIDRef=0  " & _
                     " And (ur.PTTCode Is Not Null Or ur.PTTCode <>'') And ur.PTTName Like '%" & keyWord & "%' "
         strSQL &= " Order by m.MaterialName, m.MaterialCode "
+
         Return dbUtil.List(strSQL, objCnn)
     End Function
 

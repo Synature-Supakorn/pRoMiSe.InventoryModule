@@ -103,7 +103,9 @@ Module StockCardModule
                             data.VarianceAmount = Format(dtTable.Rows(i)("NetSmallAmount7") / UnitRatioVal, "##,##0.00;(##,##0.00)")
                             varianceStock = data.VarianceAmount
                         End If
-                        data.EndingAmount = (data.OnhandAmount + varianceStock)
+                        If (data.OnhandAmount + varianceStock) >= 0 Then
+                            data.EndingAmount = (data.OnhandAmount + varianceStock)
+                        End If
                     End If
                     stockCardData.Add(data)
                 Next

@@ -967,7 +967,7 @@ Module DocumentSQL
         End If
         strSQL = "select " + selectString + ",mg.MaterialGroupID,mg.MaterialGroupCode,mg.MaterialGroupName from Materials a left outer join MaterialDept md ON a.MaterialDeptID=md.MaterialDeptID " +
                  "left outer join MaterialGroup mg ON md.MaterialGroupID=mg.MaterialGroupID " + whereString +
-                 " where a.deleted=0 " + additionalQuery
+                 " where a.deleted=0 and a.MaterialIDRef=0 " + additionalQuery
         'DocumentSQL.InsertLog(dbUtil, connection, "StockCard", "SearchByCode", "77", strSQL.ToString)
         Return dbUtil.List(strSQL, connection)
     End Function
@@ -1492,7 +1492,7 @@ Module DocumentSQL
         dbUtil.sqlExecute("IF OBJECT_ID('DummyStockCard', 'U') IS NOT NULL DROP TABLE DummyStockCard", connection)
         dbUtil.sqlExecute("create table DummyStockCard (Ordering int, DocumentTypeGroupID int, GroupHeader varchar(50), MaterialID int, NetSmallAmount decimal(18,4),TotalAmount decimal(18,4), ProductNetPrice decimal(18,4),CalculateStandardProfitLoss int)", connection)
         'Check Log
-        DocumentSQL.InsertLog(dbUtil, connection, "StockCard", "SearchByCode", "77", strSQL.ToString)
+        'DocumentSQL.InsertLog(dbUtil, connection, "StockCard", "SearchByCode", "77", strSQL.ToString)
         Return dbUtil.sqlExecute("insert into DummyStockCard(Ordering,DocumentTypeGroupID,GroupHeader,MaterialID,NetSmallAmount,TotalAmount,ProductNetPrice,CalculateStandardProfitLoss) " + strSQL, connection)
        
     End Function
