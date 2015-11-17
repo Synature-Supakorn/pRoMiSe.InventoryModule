@@ -1154,7 +1154,7 @@ Module DocumentSQL
         Dim strSQL As String
         Dim currentDate As String
         currentDate = FormatDate(Date.Now)
-        strSQL = "Select DAY_ID,PERIOD_ID,SHIFT_NO From TBPERIODS Where BUS_DATE = " & currentDate & " and SHIFT_NO<>0 And POS_ID=1"
+        strSQL = "Select DAY_ID,PERIOD_ID,SHIFT_NO From TBPERIODS Where BUS_DATE = " & currentDate & " and SHIFT_NO<>0 And POS_ID=1 ORDER BY SHIFT_NO"
         Return dbUtil.List(strSQL, connection)
     End Function
 
@@ -1162,7 +1162,15 @@ Module DocumentSQL
         Dim strSQL As String
         Dim currentDate As String
         currentDate = FormatDate(receiveDate)
-        strSQL = "Select DAY_ID,PERIOD_ID,SHIFT_NO From TBPERIODS Where BUS_DATE = " & currentDate & " and SHIFT_NO<>0 And POS_ID=1"
+        strSQL = "Select DAY_ID,PERIOD_ID,SHIFT_NO From TBPERIODS Where BUS_DATE = " & currentDate & " and SHIFT_NO<>0 And POS_ID=1 ORDER BY SHIFT_NO"
+        Return dbUtil.List(strSQL, connection)
+    End Function
+
+    Friend Function ListShiftData(ByVal dbUtil As CDBUtil, ByVal connection As SqlConnection, ByVal inventoryId As Integer, ByVal receiveDate As Date, ByVal shiftId As Integer) As DataTable
+        Dim strSQL As String
+        Dim currentDate As String
+        currentDate = FormatDate(receiveDate)
+        strSQL = "Select DAY_ID,PERIOD_ID,SHIFT_NO From TBPERIODS Where BUS_DATE = " & currentDate & "And PERIOD_ID=" & shiftId & " and SHIFT_NO<>0 And POS_ID=1 ORDER BY SHIFT_NO"
         Return dbUtil.List(strSQL, connection)
     End Function
 

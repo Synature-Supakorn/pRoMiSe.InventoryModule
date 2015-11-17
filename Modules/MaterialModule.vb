@@ -59,9 +59,11 @@
                                                 foundRows(j)("UnitSmallRatio"), foundRows(j)("UnitLargeID"), foundRows(j)("UnitLargeName"),
                                                 foundRows(j)("UnitLargeRatio"), foundRows(j)("IsDefault"), defaultPrice))
 
-                            defaultUnitLargeId = foundRows(j)("UnitLargeID")
-                            defaultUnitLargeName = foundRows(j)("UnitLargeName")
+                            
                         Next j
+                        defaultUnitLargeId = dtMaterial.Rows(i)("SAPUnitID")
+                        defaultUnitLargeName = foundRows(0)("UnitLargeName")
+                       
                     End If
                     If defaultTaxType = 99 Then
                         defaultTaxType = dtMaterial.Rows(i)("MaterialTaxType")

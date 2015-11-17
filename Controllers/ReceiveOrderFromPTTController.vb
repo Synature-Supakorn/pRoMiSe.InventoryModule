@@ -31,7 +31,7 @@ Public Class ReceiveOrderFromPTTController
         Dim shiftDay As Integer
         Dim shiftNo As Integer
         Dim dtShift As New DataTable
-        dtShift = DocumentSQL.ListShiftData(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID)
+        dtShift = DocumentSQL.ListShiftData(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID, documentDate, shiftID)
         If dtShift.Rows.Count > 0 Then
             shiftDay = dtShift.Rows(0)("DAY_ID")
             shiftNo = dtShift.Rows(0)("SHIFT_NO")
@@ -96,7 +96,7 @@ Public Class ReceiveOrderFromPTTController
             End If
         End If
 
-        dtShift = DocumentSQL.ListShiftData(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID)
+        dtShift = DocumentSQL.ListShiftData(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID, documentDate, shiftID)
         If dtShift.Rows.Count > 0 Then
             shiftDay = dtShift.Rows(0)("DAY_ID")
             shiftNo = dtShift.Rows(0)("SHIFT_NO")
@@ -193,7 +193,8 @@ Public Class ReceiveOrderFromPTTController
                     shiftdata.Add(Shift_Data.NewShift(dtResult.Rows(i)("PERIOD_ID"), dtResult.Rows(i)("SHIFT_NO")))
                 Next i
             Else
-                shiftdata.Add(Shift_Data.NewShift(1, 1))
+                'shiftdata.Add(Shift_Data.NewShift(1, 1))
+                resultText = "วันที่รับสินค้าที่เลือกไม่พบ กะที่ การขาย กรุณาตรวจสอบวันที่รับสินค้าใหม่อีกครั้ง"
             End If
         Catch ex As Exception
             resultText = ex.ToString
@@ -215,8 +216,8 @@ Public Class ReceiveOrderFromPTTController
                     shiftdata.Add(Shift_Data.NewShift(dtResult.Rows(i)("PERIOD_ID"), dtResult.Rows(i)("SHIFT_NO")))
                 Next i
             Else
-                'shiftdata.Add(Shift_Data.NewShift(1, 1))
-                resultText = "วันที่รับสินค้าที่เลือกไม่ถูกต้อง กรุณาตรวจสอบวันที่รับสินค้าใหม่อีกครั้ง"
+                'shiftdata.Add(Shift_Data.NewShift(1, 0))
+                resultText = "วันที่รับสินค้าที่เลือกไม่พบ กะที่ การขาย กรุณาตรวจสอบวันที่รับสินค้าใหม่อีกครั้ง"
                 Return False
             End If
         Catch ex As Exception

@@ -35,12 +35,12 @@ Module MaterialSQL
             strDept = " "
         End If
         If (deptID = 0) And (groupID <> 0) Then
-            strSQL = " Select m.MaterialID, m.MaterialCode, m.MaterialName, m.MaterialDeptID, m.MaterialTaxType, m.UnitSmallID, 0 As SAPUnitID " &
+            strSQL = " Select m.MaterialID, m.MaterialCode, m.MaterialName, m.MaterialDeptID, m.MaterialTaxType, m.UnitSmallID, m.UnitSmallID As SAPUnitID " &
                     " From Materials m, MaterialDept md " &
                     " Where m.Deleted = 0  AND m.MaterialDeptID = md.MaterialDeptID And m. MaterialCode Not In(select pttcode from unitratio where pttcode is not null)" &
                     "  AND m.MaterialIDRef=0 AND md.MaterialGroupID = " & groupID & strDept
         Else
-            strSQL = " Select MaterialID, MaterialCode, MaterialName, MaterialDeptID, MaterialTaxType, UnitSmallID, 0 As SAPUnitID " &
+            strSQL = " Select MaterialID, MaterialCode, MaterialName, MaterialDeptID, MaterialTaxType, UnitSmallID, m.UnitSmallID As SAPUnitID " &
                               " From Materials " &
                               " Where Deleted = 0  AND MaterialIDRef=0 AND  MaterialCode Not In(select pttcode from unitratio where pttcode is not null) " & strDept
         End If
@@ -95,7 +95,7 @@ Module MaterialSQL
         Dim strWhereGroup As String
         strWhereGroup = " "
         If isSearchInUnitRatio = False Then
-            strSQL = " Select m.MaterialID, m.MaterialCode, m.MaterialName, m.MaterialDeptID, m.MaterialTaxType, m.UnitSmallID, 0 As SAPUnitID " &
+            strSQL = " Select m.MaterialID, m.MaterialCode, m.MaterialName, m.MaterialDeptID, m.MaterialTaxType, m.UnitSmallID, m.UnitSmallID As SAPUnitID " &
                     " From Materials m " &
                     " Where m.MaterialIDRef=0 And m.MaterialCode Like'%" & materialCode & "%' AND m.Deleted = 0  And m. MaterialCode Not In(select pttcode from unitratio where pttcode is not null) " & strWhereGroup
             strSQL &= " Union " &
@@ -130,7 +130,7 @@ Module MaterialSQL
 
     Friend Function SearchMaterialByName(ByVal dbUtil As CDBUtil, ByVal objCnn As SqlConnection, ByVal keyWord As String) As DataTable
         Dim strSQL As String
-        strSQL = " Select m.MaterialID, m.MaterialCode, m.MaterialName, m.MaterialDeptID, m.MaterialTaxType, m.UnitSmallID, 0 As SAPUnitID " &
+        strSQL = " Select m.MaterialID, m.MaterialCode, m.MaterialName, m.MaterialDeptID, m.MaterialTaxType, m.UnitSmallID, m.UnitSmallID As SAPUnitID " &
                           " From Materials m " &
                           " Where m.MaterialName Like '%" & keyWord & "%' AND m.Deleted = 0 AND m.MaterialIDRef=0 And  m. MaterialCode Not In(select pttcode from unitratio where pttcode is not null)"
         strSQL &= " Union " &
@@ -145,7 +145,7 @@ Module MaterialSQL
 
     Friend Function SearchMaterialByCode(ByVal dbUtil As CDBUtil, ByVal objCnn As SqlConnection, ByVal keyWord As String) As DataTable
         Dim strSQL As String
-        strSQL = " Select m.MaterialID, m.MaterialCode, m.MaterialName, m.MaterialDeptID, m.MaterialTaxType, m.UnitSmallID, 0 As SAPUnitID  " &
+        strSQL = " Select m.MaterialID, m.MaterialCode, m.MaterialName, m.MaterialDeptID, m.MaterialTaxType, m.UnitSmallID, m.UnitSmallID As SAPUnitID  " &
                           " From Materials m " &
                           " Where m.MaterialCode Like '%" & keyWord & "%' AND m.Deleted = 0 AND m.MaterialIDRef=0  And  m. MaterialCode Not In(select pttcode from unitratio where pttcode is not null)"
         strSQL &= " Union " &
