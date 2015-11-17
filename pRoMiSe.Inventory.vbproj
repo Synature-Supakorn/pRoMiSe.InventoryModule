@@ -170,16 +170,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\pRoMiSe.DBHelper\pRoMiSe.DBHelper.vbproj">
+    <ProjectReference Include="..\pRoMiSe.DBHelper1\pRoMiSe.DBHelper.vbproj">
       <Project>{46914b9d-2e66-479b-8c03-455991488e5b}</Project>
       <Name>pRoMiSe.DBHelper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\pRoMiSe.Utilitys\pRoMiSe.Utilitys.vbproj">
+    <ProjectReference Include="..\pRoMiSe.Utilitys1\pRoMiSe.Utilitys.vbproj">
       <Project>{b8d28f97-654a-464b-8a04-5f4cd5fd9cf8}</Project>
       <Name>pRoMiSe.Utilitys</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
