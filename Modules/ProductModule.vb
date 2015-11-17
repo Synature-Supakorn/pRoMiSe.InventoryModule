@@ -88,6 +88,7 @@ Module ProductModule
                             SelUnitL(1) = KeyUnitLargeID
                             KeyUnitRatioID += 1
                             KeyUnitLargeID += 1
+
                             globalVariable.DocDBUtil.sqlExecute(unitlargesql1, globalVariable.DocConn, objTrx)
                             globalVariable.DocDBUtil.sqlExecute(unitratiosql1, globalVariable.DocConn, objTrx)
                         End If
@@ -99,6 +100,7 @@ Module ProductModule
                             KeyUnitLargeID += 1
                             globalVariable.DocDBUtil.sqlExecute(unitlargesql2, globalVariable.DocConn, objTrx)
                             globalVariable.DocDBUtil.sqlExecute(unitratiosql2, globalVariable.DocConn, objTrx)
+
                         End If
                         If Trim(UnitLargeName3) <> "" And UnitRatio3 > 0 Then
                             unitlargesql3 = "insert into unitlarge (UnitLargeID,UnitLargeName) values (" + KeyUnitLargeID.ToString + ",'" + Replace(UnitLargeName3, "'", "''") + "')"
@@ -492,6 +494,7 @@ Module ProductModule
                                     End If
                                     globalVariable.DocDBUtil.sqlExecute(unitlargesql1, globalVariable.DocConn, objTrx)
                                     globalVariable.DocDBUtil.sqlExecute(unitratiosql1, globalVariable.DocConn, objTrx)
+
                                 End If
                                 strStep = "8"
                                 If Trim(UnitLargeName2) <> "" And UnitRatio2 > 0 Then
@@ -508,6 +511,7 @@ Module ProductModule
                                     End If
                                     globalVariable.DocDBUtil.sqlExecute(unitlargesql2, globalVariable.DocConn, objTrx)
                                     globalVariable.DocDBUtil.sqlExecute(unitratiosql2, globalVariable.DocConn, objTrx)
+                                   
                                 End If
                                 strStep = "9"
                                 If Trim(UnitLargeName3) <> "" And UnitRatio3 > 0 Then

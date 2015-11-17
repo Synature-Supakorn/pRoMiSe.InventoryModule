@@ -31,7 +31,7 @@ Public Class ReceiveOrderFromPTTController
         Dim shiftDay As Integer
         Dim shiftNo As Integer
         Dim dtShift As New DataTable
-        dtShift = DocumentSQL.ListShiftData(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID)
+        dtShift = DocumentSQL.ListShiftData(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID, documentDate, shiftID)
         If dtShift.Rows.Count > 0 Then
             shiftDay = dtShift.Rows(0)("DAY_ID")
             shiftNo = dtShift.Rows(0)("SHIFT_NO")
@@ -96,7 +96,7 @@ Public Class ReceiveOrderFromPTTController
             End If
         End If
 
-        dtShift = DocumentSQL.ListShiftData(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID)
+        dtShift = DocumentSQL.ListShiftData(globalVariable.DocDBUtil, globalVariable.DocConn, inventoryID, documentDate, shiftID)
         If dtShift.Rows.Count > 0 Then
             shiftDay = dtShift.Rows(0)("DAY_ID")
             shiftNo = dtShift.Rows(0)("SHIFT_NO")
