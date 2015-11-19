@@ -217,11 +217,19 @@ Module ReceiveOrderFromPTTModule
         Dim vendorId As Integer = 0
         Dim dtResult As New DataTable
         Dim documentTypeId As Integer = 0
-
+        Dim documentDate As Date
         dtResult = DocumentSQL.GetDocument(globalVariable.DocDBUtil, globalVariable.DocConn, documentId, documentShopId, globalVariable.DocLangID)
         If dtResult.Rows.Count > 0 Then
             documentTypeId = dtResult.Rows(0)("DocumentTypeId")
+            documentDate = dtResult.Rows(0)("DocumentDate")
         End If
+    
+        If documentTypeId = 41 Then
+            If CheckValidDocumentDateForApproveDocument(globalVariable, documentShopId, documentDate, resultText) = False Then
+                Return False
+            End If
+        End If
+
         updateDate = Now
         strUpdateDate = FormatDateTime(updateDate)
         dbTrans = globalVariable.DocConn.BeginTransaction
@@ -482,16 +490,27 @@ Module ReceiveOrderFromPTTModule
         Dim dbTrans As SqlTransaction
         Dim strUpdateDate As String
         Dim dtDocument As New DataTable
+
         dtDocument = DocumentSQL.GetDocument(globalVariable.DocDBUtil, globalVariable.DocConn, documentId, documentShopId, globalVariable.DocLangID)
         If dtDocument.Rows.Count = 0 Then
             resultText = globalVariable.MESSAGE_DATANOTFOUND
             Return False
         End If
 
-        'If CheckValidDocumentForCancelDocument(globalVariable, dtDocument.Rows(0)("documentStatus"), dtDocument.Rows(0)("ShopId"), dtDocument.Rows(0)("DocumentDate"), resultText) = False Then
-        '    Return False
-        'End If
-
+        Dim documentTypeId As Integer = 0
+        Dim documentDate As Date
+        Dim documentStatus As Integer = 0
+        documentTypeId = dtDocument.Rows(0)("DocumentTypeID")
+        documentDate = dtDocument.Rows(0)("DocumentDate")
+        documentStatus = dtDocument.Rows(0)("DocumentStatus")
+        If documentTypeId = 41 Then
+            If documentStatus = 2 Then
+                If CheckValidDocumentDateForCancelDocument(globalVariable, documentShopId, documentDate, resultText) = False Then
+                    Return False
+                End If
+            End If
+        End If
+        
         strUpdateDate = FormatDateTime(Now)
         dbTrans = globalVariable.DocConn.BeginTransaction(IsolationLevel.Serializable)
         Try

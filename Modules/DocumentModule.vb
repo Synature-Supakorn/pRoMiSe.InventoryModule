@@ -235,20 +235,33 @@ Module DocumentModule
 
     Friend Function CheckValidDocumentDateForSaveNewDocument(ByVal globalVariable As GlobalVariable, ByVal invendoryId As Integer, ByVal saveDocumentDate As Date, ByRef resultText As String) As Boolean
         Dim lastTransferDay As Date
-        'Check Document Date and Last End Day
         lastTransferDay = DocumentModule.GetLastTransferStockOrCountStockDocumentDate(globalVariable, invendoryId)
         If saveDocumentDate < lastTransferDay Then
-            resultText = globalVariable.MESSAGE_FORWARDSTOCKS & " เมื่อวันที่ " & Format(lastTransferDay, "dd-MMMM-yyyy")
+            resultText = globalVariable.MESSAGE_FORWARDSTOCKS & " วันที่ " & Format(lastTransferDay, "dd/MM/yyyy") & " ก่อน"
             Return False
         End If
-        'PTT ไม่ต้องการให้ตรวจสอบการปิดสิ้นวัน
-        'Dim lastEndDay As Date
-        'lastEndDay = DocumentModule.GetLastEndDayDocumentDate(globalVariable, invendoryId, lastTransferDay)
-        'If saveDocumentDate < lastEndDay Then
-        '    resultText = "ไม่สามารถทำการบันทึกข้อมูลเอกสารนี้ได้ เนื่องจากวันที่ของเอกสารอยู่ก่อนหน้าการทำ End Day ของคลังสินค้านี้ไปแล้ว" & vbLf &
-        '       "(End Day ครั้งล่าสุดเมื่อวันที่ " & Format(lastEndDay, "dd-MMMM-yyyy") & ")"
-        '    Return False
-        'End If
+        resultText = ""
+        Return True
+    End Function
+
+    Friend Function CheckValidDocumentDateForCancelDocument(ByVal globalVariable As GlobalVariable, ByVal invendoryId As Integer, ByVal saveDocumentDate As Date, ByRef resultText As String) As Boolean
+        Dim lastTransferDay As Date
+        lastTransferDay = DocumentModule.GetLastTransferStockOrCountStockDocumentDate(globalVariable, invendoryId)
+        If saveDocumentDate < lastTransferDay Then
+            resultText = globalVariable.MESSAGE_CANCELDOCUMENT & " วันที่ " & Format(lastTransferDay, "dd/MM/yyyy") & " ก่อน"
+            Return False
+        End If
+        resultText = ""
+        Return True
+    End Function
+
+    Friend Function CheckValidDocumentDateForApproveDocument(ByVal globalVariable As GlobalVariable, ByVal invendoryId As Integer, ByVal saveDocumentDate As Date, ByRef resultText As String) As Boolean
+        Dim lastTransferDay As Date
+        lastTransferDay = DocumentModule.GetLastTransferStockOrCountStockDocumentDate(globalVariable, invendoryId)
+        If saveDocumentDate < lastTransferDay Then
+            resultText = globalVariable.MESSAGE_APPROVEDOCUMENT & " วันที่ " & Format(lastTransferDay, "dd/MM/yyyy") & " ก่อน"
+            Return False
+        End If
         resultText = ""
         Return True
     End Function

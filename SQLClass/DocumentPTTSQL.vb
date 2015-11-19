@@ -54,7 +54,7 @@ Module DocumentPTTSQL
   
     Friend Function GetMaterialOil(ByVal dbUtil As CDBUtil, ByVal connection As SqlConnection) As DataTable
         Dim strSQL As String = ""
-        strSQL = "select * from Materials where MaterialIDRef<>0"
+        strSQL = "select * from Materials where MaterialIDRef<>0 and isshowinpos=1"
         Return dbUtil.List(strSQL, connection)
     End Function
 
